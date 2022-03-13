@@ -1,0 +1,25 @@
+
+.category-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  justify-content: center;
+}
+.category {
+  height: 10rem;
+  transition: 150ms;
+}
+.category:hover {
+  box-shadow: var(--shadow-hover);
+}
+.category h3 {
+  top: 0;
+  left: 0;
+  z-index: 10;
+  background: var(--overlay-medium);
+}
+.main-banner {
+  height: 25rem;
+}
+.main-banner > div {
+  background-image: var(--overlay-dark);
+}

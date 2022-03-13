@@ -8,7 +8,7 @@ import { FiMenu } from "react-icons/fi";
 
 export const Header = () => {
   return (
-    <header className="full-width py-md fr-sb-ct shadow-light sticky-top">
+    <header className="full-width py-md fr-sb-ct">
       <div className="fr-fs-ct pl-xl">
         <Button variant={"icon"} className="mr-md">
           <FiMenu className="txt-xl" />
