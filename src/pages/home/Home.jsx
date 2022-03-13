@@ -46,7 +46,7 @@ const brands = [
 
 export const Home = () => {
   return (
-    <main className="full-width px-xl">
+    <main className="full-width full-height px-xl fc-fs-fs">
       <div className="full-width ul-light mt-sm" />
       <section class="category-container p-xl mt-sm full-width">
         {categories.map((category) => (
