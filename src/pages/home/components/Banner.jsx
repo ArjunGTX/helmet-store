@@ -1,33 +1,19 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Button } from "../../../components";
 
-export const Banner = ({ background, className }) => {
+export const Banner = ({ offer }) => {
   return (
-    <div className={`full-width px-sm ${className ? className : ""}`}>
-      <div class="main-banner bg-res fc-ct-ct br-xs full-width of-hidden pos-rel">
-        <img
-          className="img-res"
-          src={`assets/images/${background}`}
-          alt={background}
-        />
-        <div className="pos-abs txt-light full-width full-height fc-ct-ct p-xl">
-          <h4 className="txt-xl txt-center font-bold">
-            RULE THE ROAD, BUT FIRST WEAR THE CROWN
-          </h4>
-          <div className="fr-ct-ct">
-            <span className="txt-lg font-medium">SELECT YOUR'S NOW</span>
-            <Link to="/products">
-              <Button
-                size="md"
-                className="ml-lg font-medium"
-                variant="contained"
-              >
-                VIEW COLLECTION
-              </Button>
-            </Link>
-          </div>
-        </div>
+    <div class="main-banner bg-res ">
+      <div className="overlay"></div>
+      <img src="assets/images/banner.jpg" alt="banner" className="img-res" />
+      <div className="content flex-col flex-center">
+        <h2>RULE THE ROAD, BUT FIRST WEAR THE CROWN</h2>
+        <p>
+          UPTO <span class="offer">{offer}% OFF</span> POPULAR BRANDS
+        </p>
+        <Link to="/products">
+          <button class="btn btn-primary">Shop Now</button>
+        </Link>
       </div>
     </div>
   );

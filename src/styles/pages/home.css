@@ -1,24 +1,114 @@
 .category-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  padding: var(--sp-xxl);
+  gap: var(--sp-xxl);
   justify-content: center;
+  margin-top: 17rem;
 }
 .category {
   height: 10rem;
+  box-shadow: var(--shadow-white);
+  position: relative;
+  cursor: pointer;
+  border-radius: 5px;
+  background: var(--fo);
   transition: 150ms;
+  overflow: hidden;
 }
 .category:hover {
   box-shadow: var(--shadow-hover);
 }
-.category h3 {
-  top: 0;
-  left: 0;
+.category .overlay {
+  background-image: var(--overlay-dark);
+}
+.category h5 {
+  position: absolute;
+  color: var(--font-10);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 10;
-  background: var(--overlay-medium);
 }
 .main-banner {
-  height: 25rem;
+  width: 90%;
+  height: 26rem;
+  position: relative;
+  overflow: hidden;
+  margin: var(--sp-lg);
+  border-radius: 5px;
 }
-.main-banner > div {
+.main-banner .overlay {
   background-image: var(--overlay-dark);
+}
+.main-banner h2 {
+  color: var(--font-10);
+}
+.main-banner p {
+  font-size: 1.7rem;
+  color: var(--font-10);
+}
+.main-banner .content {
+  text-align: center;
+  width: 100%;
+  padding: var(--sp-xl);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+.main-banner .offer {
+  font-size: 2.4rem;
+  font-weight: 700;
+}
+.main-banner .btn {
+  font-size: 1.8rem;
+}
+section {
+  margin: 2rem;
+}
+.section-head {
+  margin-bottom: 1rem;
+}
+.new-arrival {
+  width: 90%;
+  height: 18rem;
+  padding: var(--sp-xl);
+  margin: var(--sp-lg);
+  border-radius: 5px;
+  box-shadow: var(--shadow-white);
+  display: flex;
+  cursor: pointer;
+  transition: 150ms;
+  overflow: hidden;
+}
+.new-arrival:hover {
+  box-shadow: var(--shadow-hover);
+}
+.new-arrival .cover {
+  min-width: 40%;
+}
+.new-arrival .content {
+  padding: var(--sp-lg);
+}
+.new-arrival h4 {
+  margin-bottom: var(--sp-lg);
+}
+footer {
+  padding: var(--sp-xxl);
+  background-color: var(--primary-hover);
+  box-shadow: var(--shadow-white);
+}
+footer h5 {
+  margin: var(--sp-lg) 0;
+}
+
+@media screen and (min-width: 760px) {
+  .category-container {
+      grid-template-columns: repeat(auto-fit, minmax(15rem, 18rem));
+      margin-top: 10rem;
+  }
+  .new-arrival {
+      width: 35rem;
+  }
 }
