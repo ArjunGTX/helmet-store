@@ -50,12 +50,12 @@ export const Home = () => {
   return (
     <>
       <Category categories={categories} />
-      <section class="flex-row flex-center">
+      <section className="flex-row flex-center">
         <Banner offer={35} />
       </section>
-      <section class="flex-col flex-center">
-        <h3 class="section-head">NEW ARRIVALS</h3>
-        <div class="flex-row flex-center">
+      <section className="flex-col flex-center">
+        <h3 className="section-head">NEW ARRIVALS</h3>
+        <div className="flex-row flex-center">
           {newArrivals.map((item) => (
             <NewArrival item={item} key={item.id} />
           ))}
