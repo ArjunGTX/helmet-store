@@ -1,40 +1,44 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Button } from "./Button";
-import { AiOutlineHeart } from "react-icons/ai";
+import { AiOutlineHeart, AiOutlineSearch } from "react-icons/ai";
 import { BsCart3 } from "react-icons/bs";
 import { CgProfile } from "react-icons/cg";
 import { FiMenu } from "react-icons/fi";
+import "../styles/components/header.css";
 
 export const Header = () => {
   return (
-    <header className="full-width py-md fr-sb-ct">
-      <div className="fr-fs-ct pl-xl">
-        <Button variant={"icon"} className="mr-md">
-          <FiMenu className="txt-xl" />
-        </Button>
-        <Link to={"/"}>
-          <h1 className="txt-xl txt-primary font-medium">Helmet Store</h1>
+    <header>
+      <div className="flex-row flex-center">
+        <button className="btn btn-icon">
+          <FiMenu className="nav-icon" />
+        </button>
+        <Link to="/" className="logo">
+          Helmet Store
         </Link>
       </div>
-      <div className="fr-fs-ct pr-xl">
-        <Link to="/login">
-          <Button size="sm">Login</Button>
+      <div class="header-middle">
+        <input type="text" className="search-input" />
+        <AiOutlineSearch className="search-icon" />
+      </div>
+      <div className="header-right">
+        <Link to={"/login"}>
+          <button className="btn btn-secondary">Log In</button>
         </Link>
-        <Link to="/cart" className="mx-xs">
-          <Button variant={"icon"}>
-            <AiOutlineHeart className="txt-lg" />
-          </Button>
+        <Link to="/cart">
+          <button className="btn btn-icon">
+            <BsCart3 />
+          </button>
         </Link>
-        <Link to="/wishlist" className="mx-xs">
-          <Button variant={"icon"}>
-            <BsCart3 className="txt-lg" />
-          </Button>
+        <Link to="/wishlist">
+          <button className="btn btn-icon">
+            <AiOutlineHeart />
+          </button>
         </Link>
-        <Link to="/profile" className="mx-xs">
-          <Button variant={"icon"}>
-            <CgProfile className="txt-lg" />
-          </Button>
+        <Link to="/profile">
+          <button className="btn btn-icon">
+            <CgProfile />
+          </button>
         </Link>
       </div>
     </header>

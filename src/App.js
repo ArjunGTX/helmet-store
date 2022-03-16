@@ -1,5 +1,4 @@
 import React from "react";
-import "./styles/base/app.css"
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { PageContainer } from "./components";
 import { Home } from "./pages";

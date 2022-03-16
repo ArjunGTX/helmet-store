@@ -1,3 +1,4 @@
+export * from "./Footer";
+export * from "./Category";
 export * from "./Banner";
-export * from "./Brand";
-export * from "./CategoryCard";
+export * from "./NewArrival";

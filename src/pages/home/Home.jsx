@@ -1,6 +1,6 @@
 import React from "react";
 import "../../styles/pages/home.css";
-import { Banner, Brand, CategoryCard } from "./components";
+import { Banner, Category, Footer, NewArrival } from "./components";
 
 //will be replaced by backend data in the future
 const categories = [
@@ -25,47 +25,43 @@ const categories = [
     image: "off-road.jpg",
   },
 ];
-const brands = [
+const newArrivals = [
   {
     id: 1,
-    image: "agv.png",
+    image: "pista-gp-rr-min.png",
+    item: "AGV PISTA GP",
+    desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente unde velit labore accusantium veniam",
   },
   {
-    id: 2,
-    image: "shoei.png",
+    id: 1,
+    image: "pista-gp-rr-min.png",
+    item: "AGV PISTA GP",
+    desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente unde velit labore accusantium veniam",
   },
   {
-    id: 3,
-    image: "arai.png",
-  },
-  {
-    id: 4,
-    image: "mt.png",
+    id: 1,
+    image: "pista-gp-rr-min.png",
+    item: "AGV PISTA GP",
+    desc: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente unde velit labore accusantium veniam",
   },
 ];
 
 export const Home = () => {
   return (
-    <main className="full-width full-height px-xl fc-fs-fs">
-      <div className="full-width ul-light mt-sm" />
-      <section class="category-container p-xl mt-sm full-width">
-        {categories.map((category) => (
-          <CategoryCard
-            key={category.id}
-            category={category.category}
-            image={category.image}
-            className="m-sm"
-          />
-        ))}
+    <>
+      <Category categories={categories} />
+      <section class="flex-row flex-center">
+        <Banner offer={35} />
       </section>
-      <section className="full-width fc-ct-ct p-xl pt-sm">
-        <Banner background={"banner.jpg"} className="py-md" />
+      <section class="flex-col flex-center">
+        <h3 class="section-head">NEW ARRIVALS</h3>
+        <div class="flex-row flex-center">
+          {newArrivals.map((item) => (
+            <NewArrival item={item} key={item.id} />
+          ))}
+        </div>
       </section>
-      <section className="full-width px-xl fr-ct-ct f-wrap mt-auto mb-xl">
-        {brands.map((brand) => (
-          <Brand key={brand.id} image={brand.image} className="mx-xl my-md" />
-        ))}
-      </section>
-    </main>
+      <Footer />
+    </>
   );
 };
