@@ -9,6 +9,7 @@ import {
   ResetPassword,
   SignUp,
 } from "./pages";
+import { Wishlist } from "./pages/wishlist/Wishlist";
 
 const App = () => {
   return (
@@ -28,6 +29,10 @@ const App = () => {
         <Route
           path="/products"
           element={<PageContainer page={<Products />} />}
+        />
+        <Route
+          path="/wishlist"
+          element={<PageContainer page={<Wishlist />} />}
         />
       </Routes>
     </BrowserRouter>
