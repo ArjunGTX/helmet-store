@@ -108,15 +108,16 @@ input:focus {
 
 ::-webkit-scrollbar {
     width: 5px;
+    height: 5px;
 }
 ::-webkit-scrollbar-track {
     background-color: var(--bg-primary);
 }
 ::-webkit-scrollbar-thumb {
-    background-color: var(--primary-70);
+    background-color: #c9c8c8e3;
     border-radius: 30px;
 }
 * {
     scrollbar-width: thin;
-    scrollbar-color: var(--primary-70) var(--bg-primary);
+    scrollbar-color: #c9c8c8e3 var(--bg-primary);
 }

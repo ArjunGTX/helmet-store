@@ -1,7 +1,14 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { PageContainer } from "./components";
-import { ForgotPassword, Home, Login, ResetPassword, SignUp } from "./pages";
+import {
+  ForgotPassword,
+  Home,
+  Login,
+  Products,
+  ResetPassword,
+  SignUp,
+} from "./pages";
 
 const App = () => {
   return (
@@ -17,6 +24,10 @@ const App = () => {
         <Route
           path="/reset-password"
           element={<PageContainer page={<ResetPassword />} />}
+        />
+        <Route
+          path="/products"
+          element={<PageContainer page={<Products />} />}
         />
       </Routes>
     </BrowserRouter>
