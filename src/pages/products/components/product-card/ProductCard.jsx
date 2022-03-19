@@ -1,13 +1,15 @@
 import React from "react";
-import { AiOutlineHeart } from "react-icons/ai";
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { ProductRating } from "./ProductRating";
 
-export const ProductCard = ({ product }) => {
+export const ProductCard = ({ product, isFavourite }) => {
   const getOfferPrice = (price, offer) => price - (price * offer) / 100;
   return (
     <div className="card">
       <button className="btn btn-icon">
-        <AiOutlineHeart />
+        {
+          isFavourite ? <AiFillHeart className="heart-fill" /> : <AiOutlineHeart />
+        }
       </button>
       <div className="card-cover flex-row flex-center">
         <img src={product.image} alt={product.name} />

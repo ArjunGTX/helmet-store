@@ -2,12 +2,14 @@ import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { PageContainer } from "./components";
 import {
+  Cart,
   ForgotPassword,
   Home,
   Login,
   Products,
   ResetPassword,
   SignUp,
+  Wishlist,
 } from "./pages";
 
 const App = () => {
@@ -28,6 +30,14 @@ const App = () => {
         <Route
           path="/products"
           element={<PageContainer page={<Products />} />}
+        />
+        <Route
+          path="/wishlist"
+          element={<PageContainer page={<Wishlist />} />}
+        />
+         <Route
+          path="/cart"
+          element={<PageContainer page={<Cart />} />}
         />
       </Routes>
     </BrowserRouter>
