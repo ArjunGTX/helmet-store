@@ -4,23 +4,21 @@ export const categories = [
   {
     _id: uuid(),
     categoryName: "Racing",
-    description: "Performance oriented, extremely aerodynamic helmets.",
+    category: "racing",
   },
   {
     _id: uuid(),
     categoryName: "Off Road",
-    description:
-      "Specially designed helmets to provide confidence on tough terrains and off-road trials.",
+    category: "street",
   },
   {
     _id: uuid(),
     categoryName: "Street",
-    description: "Glossy and graphics printed helmets for a street show.",
+    category: "offRoad",
   },
   {
     _id: uuid(),
     categoryName: "Touring",
-    description:
-      "Lightweight and comfortable helmets for long rides and highway cruising.",
+    category: "touring",
   },
 ];
