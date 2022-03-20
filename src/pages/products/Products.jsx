@@ -4,7 +4,7 @@ import { Filters, ProductCard } from "./components";
 import { GrClose } from "react-icons/gr";
 import { useFilters, useSidebar } from "../../contexts";
 import { useClickOutside } from "../../utils/hooks";
-import { getFilteredProducts, getProducts, getSortedItems } from "../../utils/api";
+import { getFilteredProducts, getProducts } from "../../utils/api";
 
 export const Products = () => {
   const { isSidebarActive, toggleSidebar } = useSidebar();
@@ -32,8 +32,6 @@ export const Products = () => {
     })();
   }, []);
 
-  console.log(getSortedItems(products,filters.sortBy));
-
   const filteredProducts = getFilteredProducts(products, filters);
 
   return (
@@ -48,7 +46,7 @@ export const Products = () => {
         {filters && <Filters filters={filters} />}
       </div>
       <div className="products flex-row flex-center">
-        {filteredProducts.map((product) => (
+        {filteredProducts?.map((product) => (
           <ProductCard product={product} key={product._id} />
         ))}
       </div>

@@ -26,7 +26,9 @@ export const ProductCard = ({ product, isFavourite }) => {
       </div>
       <ProductRating rating={product.rating} ratingCount={product.ratingCount} />
       <div className="card-bottom">
-        <button className="btn btn-primary">Add to Cart</button>
+        {
+          product.inStock ? <button className="btn btn-primary">Add to Cart</button> : <button className="btn btn-error" disabled>Out of Stock</button>
+        }
       </div>
     </div>
   );

@@ -60,7 +60,7 @@ export const Filters = ({ filters }) => {
 
   const handleSortChange = (e) => filterDispatch(sortItems(e.target.value));
 
-  const handleClearAll = () => filterDispatch(clearFilters);
+  const handleClearAll = () => filterDispatch(clearFilters());
 
   return (
     <>
@@ -76,7 +76,7 @@ export const Filters = ({ filters }) => {
           min={5000}
           max={150000}
           step={2000}
-          range={filters.PriceRange}
+          range={filters.priceRange}
           onChange={handlePriceChange}
         />
         <hr />
@@ -129,7 +129,12 @@ export const Filters = ({ filters }) => {
         <h4>Sort by</h4>
         <div className="flex-col">
           {["high", "low"].map((sort) => (
-            <SortBy sort={sort} checked={filters.sortBy === sort} onChange={handleSortChange} key={sort} />
+            <SortBy
+              sort={sort}
+              checked={filters.sortBy === sort}
+              onChange={handleSortChange}
+              key={sort}
+            />
           ))}
         </div>
       </div>
