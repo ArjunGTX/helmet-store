@@ -9,12 +9,12 @@ export const categories = [
   {
     _id: uuid(),
     categoryName: "Off Road",
-    category: "street",
+    category: "offRoad",
   },
   {
     _id: uuid(),
     categoryName: "Street",
-    category: "offRoad",
+    category: "street",
   },
   {
     _id: uuid(),
