@@ -1,13 +1,13 @@
 .category-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
-  padding: var(--sp-xxl);
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  padding: var(--sp-xxl) var(--sp-lg);
   gap: var(--sp-xxl);
   justify-content: center;
   margin-top: 17rem;
 }
 .category {
-  height: 10rem;
+  height: 12rem;
   box-shadow: var(--shadow-white);
   position: relative;
   cursor: pointer;
@@ -31,8 +31,8 @@
   z-index: 10;
 }
 .main-banner {
-  width: 90%;
-  height: 26rem;
+  width: 100%;
+  height: 28rem;
   position: relative;
   overflow: hidden;
   margin: var(--sp-lg);
@@ -55,7 +55,7 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
 }
 .main-banner .offer {
   font-size: 2.4rem;
@@ -70,29 +70,9 @@ section {
 .section-head {
   margin-bottom: 1rem;
 }
-.new-arrival {
-  width: 90%;
-  height: 18rem;
-  padding: var(--sp-xl);
-  margin: var(--sp-lg);
-  border-radius: 5px;
-  box-shadow: var(--shadow-white);
-  display: flex;
+.brand {
+  margin: var(--sp-sm) var(--sp-lg);
   cursor: pointer;
-  transition: 150ms;
-  overflow: hidden;
-}
-.new-arrival:hover {
-  box-shadow: var(--shadow-hover);
-}
-.new-arrival .cover {
-  min-width: 40%;
-}
-.new-arrival .content {
-  padding: var(--sp-lg);
-}
-.new-arrival h4 {
-  margin-bottom: var(--sp-lg);
 }
 footer {
   padding: var(--sp-xxl);
@@ -105,10 +85,13 @@ footer h5 {
 
 @media screen and (min-width: 760px) {
   .category-container {
-      grid-template-columns: repeat(auto-fit, minmax(15rem, 18rem));
-      margin-top: 10rem;
+    grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+    margin-top: 10rem;
   }
-  .new-arrival {
-      width: 35rem;
+  .category {
+    height: 18rem;
+  }
+  .main-banner {
+    height: 40rem;
   }
 }

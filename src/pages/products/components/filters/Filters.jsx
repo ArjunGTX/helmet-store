@@ -1,18 +1,18 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import {
   addBrand,
+  addCategory,
   clearFilters,
   filterPrice,
   filterRating,
   removeBrand,
+  removeCategory,
   sortItems,
-  toggleCategory,
   toggleDelivery,
   toggleStock,
 } from "../../../../actions";
-import { useFilters } from "../../../../contexts";
-import { getCategories } from "../../../../utils/api";
-import { brands } from "../../../../utils/constants";
+import { useCategories, useFilters } from "../../../../contexts";
+import { brandList } from "../../../../utils/constants";
 import { Availability } from "./Availability";
 import { Brand } from "./Brand";
 import { Category } from "./Category";
@@ -22,18 +22,10 @@ import { SortBy } from "./SortBy";
 
 export const Filters = ({ filters }) => {
   const { filterDispatch } = useFilters();
-
-  const [categories, setCategories] = useState([]);
+  const { categories } = useCategories();
 
   useEffect(() => {
-    (async () => {
-      try {
-        const response = await getCategories();
-        setCategories(response.data.categories);
-      } catch (error) {
-        console.log(error);
-      }
-    })();
+    return () => filterDispatch(clearFilters());
   }, []);
 
   const handlePriceChange = (e) => filterDispatch(filterPrice(e.target.value));
@@ -44,8 +36,13 @@ export const Filters = ({ filters }) => {
   const handleDeliveryChange = (e) =>
     filterDispatch(toggleDelivery(e.target.checked));
 
-  const handleCategoryChange = (e) =>
-    filterDispatch(toggleCategory(e.target.value));
+  const handleCategoryChange = (e) => {
+    if (e.target.checked) {
+      filterDispatch(addCategory(e.target.value));
+    } else {
+      filterDispatch(removeCategory(e.target.value));
+    }
+  };
 
   const handleBrandChange = (e) => {
     if (e.target.checked) {
@@ -104,14 +101,16 @@ export const Filters = ({ filters }) => {
         <hr />
         <h4>Brands</h4>
         <div className="flex-col">
-          {brands.map((brand) => (
-            <Brand
-              brand={brand}
-              key={brand}
-              checked={filters.brands.includes[brand]}
-              onChange={handleBrandChange}
-            />
-          ))}
+          {brandList
+            .map((item) => item.brand)
+            .map((brand) => (
+              <Brand
+                brand={brand}
+                key={brand}
+                checked={filters.brands.includes[brand]}
+                onChange={handleBrandChange}
+              />
+            ))}
         </div>
         <hr />
         <h4>Rating</h4>
