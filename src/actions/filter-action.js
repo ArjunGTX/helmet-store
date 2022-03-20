@@ -35,7 +35,7 @@ export const filterRating = (rating) => ({
 
 export const filterPrice = (price) => ({
   type: "FILTER_PRICE",
-  payload: price,
+  payload: parseInt(price),
 });
 
 export const clearFilters = () => ({

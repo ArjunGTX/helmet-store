@@ -1,61 +1,39 @@
-import React from "react";
+import React, { useRef, useState, useEffect } from "react";
 import "../../styles/pages/products.css";
 import { Filters, ProductCard } from "./components";
 import { GrClose } from "react-icons/gr";
-import { useSidebar } from "../../contexts";
-import { useRef } from "react";
+import { useFilters, useSidebar } from "../../contexts";
 import { useClickOutside } from "../../utils/hooks";
-
-//hardcoded
-const products = [
-  {
-    id: 1,
-    name: "AGV PISTA GP",
-    price: 104000,
-    offer: 25,
-    rating: 4,
-    ratingCount: 456,
-    description: "RACE TESTED, GLOSSY GRAPHICS PRINTED",
-    image: "assets/images/helmets/racing/agv/pista-gp-rr-min.png",
-  },
-  {
-    id: 2,
-    name: "AGV PISTA GP",
-    price: 104000,
-    offer: 25,
-    rating: 3,
-    ratingCount: 320,
-    description: "RACE TESTED, GLOSSY GRAPHICS PRINTED",
-    image: "assets/images/helmets/racing/agv/pista-gp-rr-min.png",
-  },
-  {
-    id: 3,
-    name: "AGV PISTA GP",
-    price: 104000,
-    offer: 25,
-    rating: 5,
-    ratingCount:573,
-    description: "RACE TESTED, GLOSSY GRAPHICS PRINTED",
-    image: "assets/images/helmets/racing/agv/pista-gp-rr-min.png",
-  },
-  {
-    id: 4,
-    name: "AGV PISTA GP",
-    price: 104000,
-    offer: 25,
-    rating: 3,
-    ratingCount: 246,
-    description: "RACE TESTED, GLOSSY GRAPHICS PRINTED",
-    image: "assets/images/helmets/racing/agv/pista-gp-rr-min.png",
-  },
-];
+import { getFilteredProducts, getProducts } from "../../utils/api";
 
 export const Products = () => {
   const { isSidebarActive, toggleSidebar } = useSidebar();
   const sidebarRef = useRef(null);
   const closeSidebar = () => toggleSidebar(false);
-
   useClickOutside(sidebarRef, closeSidebar);
+
+  const { filters } = useFilters();
+
+  const [loading, setLoading] = useState(false);
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        setLoading(true);
+        const response = await getProducts();
+        setLoading(false);
+        setProducts(response.data.products);
+      } catch (error) {
+        //will be replaced by alert messages
+        console.log(error);
+        setLoading(false);
+      }
+    })();
+  }, []);
+
+  const filteredProducts = getFilteredProducts(products, filters);
+
   return (
     <div className="products-container">
       <div
@@ -65,12 +43,14 @@ export const Products = () => {
         <button onClick={closeSidebar} className="btn btn-icon close-icon">
           <GrClose />
         </button>
-        <Filters />
+        {filters && <Filters filters={filters} />}
       </div>
       <div className="products flex-row flex-center">
-        {products.map((product) => (
-          <ProductCard product={product} key={product.id} />
-        ))}
+        {filteredProducts.length !== 0 ? filteredProducts.map((product) => (
+          <ProductCard product={product} key={product._id} />
+        )) : (
+          <h3>No Products matched your search!</h3>
+        )}
       </div>
     </div>
   );

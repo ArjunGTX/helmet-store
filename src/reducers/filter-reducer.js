@@ -1,16 +1,16 @@
 export const initialFilters = {
+  priceRange: 75000,
   includeOutOfStock: false,
   fastDelivery: false,
-  sortBy: null,
+  sortBy: "",
   category: {
     racing: true,
     street: true,
     touring: true,
     offRoad: true,
   },
-  brands: ["agv", "arai", "mt", "shoei"],
-  rating: null,
-  priceRange: 150000,
+  brands: [],
+  rating: 0,
 };
 
 export const filterReducer = (filters, action) => {
@@ -22,11 +22,14 @@ export const filterReducer = (filters, action) => {
     case "TOGGLE_DELIVERY":
       return { ...filters, fastDelivery: !filters.fastDelivery };
     case "ADD_BRAND":
-      return { ...filters, brands: [...filters.brands, action.payload] };
+      return {
+        ...filters,
+        brands: [...filters.brands, action.payload],
+      };
     case "REMOVE_BRAND":
       return {
         ...filters,
-        brands: brands.filters((brand) => brand !== action.payload),
+        brands: filters.brands.filter((brand) => brand !== action.payload),
       };
     case "TOGGLE_CATEGORY":
       return {
