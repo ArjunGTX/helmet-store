@@ -31,12 +31,20 @@ export const filterReducer = (filters, action) => {
         ...filters,
         brands: filters.brands.filter((brand) => brand !== action.payload),
       };
-    case "TOGGLE_CATEGORY":
+    case "ADD_CATEGORY":
       return {
         ...filters,
         category: {
           ...filters.category,
-          [action.payload]: !filters.category[action.payload],
+          [action.payload]: true,
+        },
+      };
+    case "REMOVE_CATEGORY":
+      return {
+        ...filters,
+        category: {
+          ...filters.category,
+          [action.payload]: false,
         },
       };
     case "FILTER_RATING":

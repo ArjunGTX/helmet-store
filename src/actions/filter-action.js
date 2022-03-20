@@ -13,8 +13,13 @@ export const toggleDelivery = (delivery) => ({
   payload: delivery,
 });
 
-export const toggleCategory = (category) => ({
-  type: "TOGGLE_CATEGORY",
+export const addCategory = (category) => ({
+  type: "ADD_CATEGORY",
+  payload: category,
+});
+
+export const removeCategory = (category) => ({
+  type: "REMOVE_CATEGORY",
   payload: category,
 });
 
