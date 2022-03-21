@@ -28,9 +28,11 @@ export const Header = () => {
         <AiOutlineSearch className="search-icon" />
       </div>
       <div className="header-right">
-        <Link to={"/login"}>
-          <button className="btn btn-secondary">Log In</button>
-        </Link>
+        {!localStorage.getItem("isLoggedIn") && (
+          <Link to={"/login"}>
+            <button className="btn btn-secondary">Log In</button>
+          </Link>
+        )}
         <Link to="/cart">
           <button className="btn btn-icon">
             <BsCart3 />
