@@ -11,7 +11,6 @@ import { CartCard, Checkout } from "./components";
 
 export const Cart = () => {
   const { cart } = useCart();
-  console.log(cart);
   const checkoutDetails = {
     qty: getTotalQty(cart),
     price: getTotalCartPrice(cart),
