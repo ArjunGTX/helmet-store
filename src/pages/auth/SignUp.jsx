@@ -3,9 +3,11 @@ import { useState } from "react";
 import "../../styles/pages/auth.css";
 import { signUp, validateSignUpData } from "../../utils/api";
 import { InputAlert } from "../../components";
+import { useAuth } from "../../contexts";
 
 export const SignUp = () => {
   const navigate = useNavigate();
+  const { setAuth } = useAuth();
   const [loading, setLoading] = useState(false);
   const [signUpData, setSignUpData] = useState({
     firstName: "",
@@ -58,9 +60,11 @@ export const SignUp = () => {
       );
       setLoading(false);
       if (response.status !== 201) return;
-      localStorage.setItem("encodedToken", response.data.encodedToken);
-      localStorage.setItem("isLoggedIn", true);
-      localStorage.setItem("userId", response.data.createdUser._id);
+      setAuth({
+        userId: response.data.createdUser._id,
+        isLoggedIn: true,
+        encodedToken: response.data.encodedToken,
+      });
       navigate("/");
     } catch (error) {
       setLoading(false);

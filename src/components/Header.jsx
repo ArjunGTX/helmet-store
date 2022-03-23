@@ -5,16 +5,22 @@ import { BsCart3 } from "react-icons/bs";
 import { CgProfile } from "react-icons/cg";
 import { FiMenu } from "react-icons/fi";
 import "../styles/components/header.css";
-import { useSidebar } from "../contexts";
+import { useAuth, useSidebar } from "../contexts";
 
 export const Header = () => {
-  const location = useLocation();
+  const { pathname } = useLocation();
   const { toggleSidebar } = useSidebar();
+  const { auth } = useAuth();
+  const showLoginButton = () => {
+    if (auth.isLoggedIn) return false;
+    if (pathname === "/" || pathname === "/products") return true;
+    return false;
+  };
   return (
     <header>
       <div className="flex-row flex-center">
         {/* only show hamburger menu on products page */}
-        {location.pathname === "/products" && (
+        {pathname === "/products" && (
           <button onClick={() => toggleSidebar(true)} className="btn btn-icon">
             <FiMenu className="nav-icon" />
           </button>
@@ -28,7 +34,7 @@ export const Header = () => {
         <AiOutlineSearch className="search-icon" />
       </div>
       <div className="header-right">
-        {!localStorage.getItem("isLoggedIn") && (
+        {showLoginButton() && (
           <Link to={"/login"}>
             <button className="btn btn-secondary">Log In</button>
           </Link>
