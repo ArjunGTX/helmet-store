@@ -1,8 +1,10 @@
 import React from "react";
-import { AiOutlineHeart } from "react-icons/ai";
-import { useAuth, useCart } from "../../../contexts";
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
+import { useAuth, useCart, useWishlist } from "../../../contexts";
 import {
+  addToWishlist,
   deleteFromCart,
+  deleteFromWishlist,
   getOfferPrice,
   updateCartCount,
 } from "../../../utils/api";
@@ -10,6 +12,9 @@ import {
 export const CartCard = ({ item }) => {
   const { setCart } = useCart();
   const { auth } = useAuth();
+  const { wishlist, setWishlist } = useWishlist();
+
+  const isFavourite = wishlist.some((product) => product._id === item._id);
 
   const updateItemCount = async (type) => {
     try {
@@ -23,6 +28,30 @@ export const CartCard = ({ item }) => {
       );
       if (status !== 200) return;
       setCart(data.cart);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const addProductToWishlist = async () => {
+    try {
+      const { status, data } = await addToWishlist(auth.encodedToken, item);
+      if (status !== 201) return;
+      setWishlist(data.wishlist);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const removeProductFromWishlist = async () => {
+    try {
+      const { status, data } = await deleteFromWishlist(
+        auth.encodedToken,
+        item._id
+      );
+      if (status !== 200) return;
+      setWishlist(data.wishlist);
+      return;
     } catch (error) {
       console.log(error);
     }
@@ -44,8 +73,17 @@ export const CartCard = ({ item }) => {
 
   return (
     <div className="card card-horizontal">
-      <button className="btn btn-icon">
-        <AiOutlineHeart />
+      <button
+        onClick={() =>
+          isFavourite ? removeProductFromWishlist() : addProductToWishlist()
+        }
+        className="btn btn-icon"
+      >
+        {isFavourite ? (
+          <AiFillHeart className="heart-fill" />
+        ) : (
+          <AiOutlineHeart />
+        )}
       </button>
       <div className="card-cover flex-row flex-center">
         <img src={item.image} alt={item.name} />

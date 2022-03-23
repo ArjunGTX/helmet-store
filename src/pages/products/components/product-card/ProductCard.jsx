@@ -1,22 +1,27 @@
 import React, { useState } from "react";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
-import { useAuth, useCart } from "../../../../contexts";
+import { useAuth, useCart, useWishlist } from "../../../../contexts";
 import {
   addToCart,
+  addToWishlist,
   deleteFromCart,
+  deleteFromWishlist,
   getOfferPrice,
 } from "../../../../utils/api";
 import { ProductRating } from "./ProductRating";
 
-export const ProductCard = ({ product, isFavourite }) => {
+export const ProductCard = ({ product }) => {
   const navigate = useNavigate();
   const { auth } = useAuth();
   const { cart, setCart } = useCart();
+  const { wishlist, setWishlist } = useWishlist();
 
+  const [loading, setLoading] = useState(false);
   const [isItemAdded, setIsItemAdded] = useState(
     cart.some((item) => item._id === product._id)
   );
+  const isFavourite = wishlist.some((item) => item._id === product._id);
 
   const addProductToCart = async () => {
     try {
@@ -24,10 +29,30 @@ export const ProductCard = ({ product, isFavourite }) => {
         navigate("/login");
         return;
       }
+      setLoading(true);
       const { status, data } = await addToCart(auth.encodedToken, product);
-      if (status !== 201) return;
+      if (status !== 201) {
+        setLoading(false);
+        return;
+      }
       setCart(data.cart);
       setIsItemAdded(true);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  };
+
+  const addProductToWishlist = async () => {
+    try {
+      if (!auth.isLoggedIn) {
+        navigate("/login");
+        return;
+      }
+      const { status, data } = await addToWishlist(auth.encodedToken, product);
+      if (status !== 201) return;
+      setWishlist(data.wishlist);
     } catch (error) {
       console.log(error);
     }
@@ -35,13 +60,33 @@ export const ProductCard = ({ product, isFavourite }) => {
 
   const removeItemFromCart = async () => {
     try {
+      setLoading(true);
       const { status, data } = await deleteFromCart(
         auth.encodedToken,
         product._id
       );
-      if (status !== 200) return;
+      if (status !== 200) {
+        setLoading(false);
+        return;
+      }
       setCart(data.cart);
       setIsItemAdded(false);
+      setLoading(false);
+      return;
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  };
+
+  const removeProductFromWishlist = async () => {
+    try {
+      const { status, data } = await deleteFromWishlist(
+        auth.encodedToken,
+        product._id
+      );
+      if (status !== 200) return;
+      setWishlist(data.wishlist);
       return;
     } catch (error) {
       console.log(error);
@@ -50,7 +95,12 @@ export const ProductCard = ({ product, isFavourite }) => {
 
   return (
     <div className="card">
-      <button className="btn btn-icon">
+      <button
+        onClick={() =>
+          isFavourite ? removeProductFromWishlist() : addProductToWishlist()
+        }
+        className="btn btn-icon"
+      >
         {isFavourite ? (
           <AiFillHeart className="heart-fill" />
         ) : (
@@ -80,6 +130,7 @@ export const ProductCard = ({ product, isFavourite }) => {
             onClick={() =>
               isItemAdded ? removeItemFromCart() : addProductToCart()
             }
+            disabled={loading}
             className="btn btn-primary"
           >
             {isItemAdded ? "Remove from Cart" : "Add to Cart"}
