@@ -3,3 +3,4 @@ export const getOfferPrice = (price, discount) =>
 
 export * from "./products";
 export * from "./auth";
+export * from "./cart";

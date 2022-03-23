@@ -39,17 +39,17 @@ export const Header = () => {
             <button className="btn btn-secondary">Log In</button>
           </Link>
         )}
-        <Link to="/cart">
+        <Link to={auth.isLoggedIn ? "/cart" : "/login"}>
           <button className="btn btn-icon">
             <BsCart3 />
           </button>
         </Link>
-        <Link to="/wishlist">
+        <Link to={auth.isLoggedIn ? "/wishlist" : "/login"}>
           <button className="btn btn-icon">
             <AiOutlineHeart />
           </button>
         </Link>
-        <Link to="/profile">
+        <Link to={auth.isLoggedIn ? "/profile" : "/login"}>
           <button className="btn btn-icon">
             <CgProfile />
           </button>

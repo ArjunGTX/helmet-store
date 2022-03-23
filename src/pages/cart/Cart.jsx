@@ -1,48 +1,44 @@
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../contexts";
+import { Link } from "react-router-dom";
+import { useCart } from "../../contexts";
 import "../../styles/pages/cart.css";
+import {
+  getTotalCartPrice,
+  getTotalDeliveryCharge,
+  getTotalDiscount,
+  getTotalQty,
+} from "../../utils/api";
 import { CartCard, Checkout } from "./components";
 
-const cartList = [
-  {
-    id: 1,
-    name: "AGV PISTA GP",
-    price: 104000,
-    offer: 25,
-    rating: 4,
-    count: 5,
-    ratingCount: 456,
-    description: "RACE TESTED, GLOSSY GRAPHICS PRINTED",
-    image: "assets/images/helmets/racing/agv/pista-gp-rr-min.png",
-  },
-  {
-    id: 2,
-    name: "AGV PISTA GP",
-    price: 104000,
-    offer: 25,
-    rating: 3,
-    ratingCount: 320,
-    count: 2,
-    description: "RACE TESTED, GLOSSY GRAPHICS PRINTED ",
-    image: "assets/images/helmets/racing/agv/pista-gp-rr-min.png",
-  },
-];
-
 export const Cart = () => {
-  const navigate = useNavigate();
-  const { auth } = useAuth();
-  useEffect(() => !auth.isLoggedIn && navigate("/login"), []);
+  const { cart } = useCart();
+  console.log(cart);
+  const checkoutDetails = {
+    qty: getTotalQty(cart),
+    price: getTotalCartPrice(cart),
+    discount: getTotalDiscount(cart),
+    deliveryCharge: getTotalDeliveryCharge(cart),
+  };
   return (
     <>
-      <h3 className="page-title">MY CART(2)</h3>
+      {cart.length !== 0 && (
+        <h3 className="page-title">MY CART ({cart.length})</h3>
+      )}
       <div className="cart-container">
         <div className="items">
-          {cartList.map((item) => (
-            <CartCard item={item} key={item.id} />
+          {cart.map((item) => (
+            <CartCard item={item} key={item._id} />
           ))}
         </div>
-        <Checkout />
+        {cart.length !== 0 ? (
+          <Checkout checkoutDetails={checkoutDetails} />
+        ) : (
+          <div className="flex-col flex-center cart-empty">
+            <h2>Your Cart is Empty</h2>
+            <Link to="/products" className="btn btn-primary">
+              SHOP NOW
+            </Link>
+          </div>
+        )}
       </div>
     </>
   );
