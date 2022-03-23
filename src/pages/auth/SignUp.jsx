@@ -65,7 +65,7 @@ export const SignUp = () => {
         isLoggedIn: true,
         encodedToken: response.data.encodedToken,
       });
-      navigate(-1);
+      navigate("/");
     } catch (error) {
       setLoading(false);
       console.log(error);
