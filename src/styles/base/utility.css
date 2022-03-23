@@ -19,6 +19,7 @@
   --font-70: hsla(0, 0%, 25%, 1);
   --font-50: hsla(0, 0%, 30%, 1);
   --font-10: hsla(100, 90%, 100%, 1);
+  --font-error: #e72828;
   --bg-primary: #fff;
   --bg-gray: #f3f3f3;
   --rating-gold: #ffd700;
@@ -174,6 +175,9 @@ hr {
 }
 .heart-fill {
   color: var(--heart-red);
+}
+.txt-error {
+  color: var(--font-error);
 }
 @media screen and (min-width: 760px) {
   .page-title {

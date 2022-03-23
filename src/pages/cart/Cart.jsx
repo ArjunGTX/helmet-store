@@ -1,4 +1,6 @@
-import React from "react";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts";
 import "../../styles/pages/cart.css";
 import { CartCard, Checkout } from "./components";
 
@@ -28,6 +30,9 @@ const cartList = [
 ];
 
 export const Cart = () => {
+  const navigate = useNavigate();
+  const { auth } = useAuth();
+  useEffect(() => !auth.isLoggedIn && navigate("/login"), []);
   return (
     <>
       <h3 className="page-title">MY CART(2)</h3>
