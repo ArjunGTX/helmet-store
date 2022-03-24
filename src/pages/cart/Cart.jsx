@@ -31,7 +31,7 @@ export const Cart = () => {
         {cart.length !== 0 ? (
           <Checkout checkoutDetails={checkoutDetails} />
         ) : (
-          <div className="flex-col flex-center cart-empty">
+          <div className="flex-col flex-center full-page">
             <h2>Your Cart is Empty</h2>
             <Link to="/products" className="btn btn-primary">
               SHOP NOW

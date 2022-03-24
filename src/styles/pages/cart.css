@@ -52,10 +52,6 @@
   margin-top: var(--sp-xxl);
   margin-bottom: 0;
 }
-.cart-empty {
-  width: 100%;
-  height: 100vh;
-}
 @media screen and (min-width: 480px) {
   .card-horizontal {
     min-width: 30rem;
