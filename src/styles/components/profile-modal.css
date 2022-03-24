@@ -1,0 +1,23 @@
+.profile-modal {
+  width: 18rem;
+  position: fixed;
+  top: 5rem;
+  right: 2rem;
+  border-radius: 1rem;
+  box-shadow: var(--shadow-white);
+  background-color: var(--bg-primary);
+  padding: var(--sp-xxl);
+}
+.profile-modal .btn {
+  font-size: 1.1rem;
+    margin-top: var(--sp-lg);
+}
+.profile-modal .icon {
+  font-size: 2rem;
+  margin-right: var(--sp-md);
+}
+.profile-modal .item {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: var(--sp-xl);
+}

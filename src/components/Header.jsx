@@ -1,21 +1,31 @@
-import React from "react";
+import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { AiOutlineHeart, AiOutlineSearch } from "react-icons/ai";
 import { BsCart3 } from "react-icons/bs";
 import { CgProfile } from "react-icons/cg";
 import { FiMenu } from "react-icons/fi";
 import "../styles/components/header.css";
-import { useAuth, useSidebar } from "../contexts";
+import { useAuth, useCart, useSidebar, useWishlist } from "../contexts";
+import { getTotalQty } from "../utils/api";
+import { ProfileModal } from "./ProfileModal";
 
 export const Header = () => {
   const { pathname } = useLocation();
   const { toggleSidebar } = useSidebar();
   const { auth } = useAuth();
+  const { cart } = useCart();
+  const { wishlist } = useWishlist();
+
+  const [showProfileModal, setShowProfileModal] = useState(true);
+
+  const closeProfileModal = () => setShowProfileModal(false);
+
   const showLoginButton = () => {
     if (auth.isLoggedIn) return false;
     if (pathname === "/" || pathname === "/products") return true;
     return false;
   };
+
   return (
     <header>
       <div className="flex-row flex-center">
@@ -41,20 +51,28 @@ export const Header = () => {
         )}
         <Link to={auth.isLoggedIn ? "/cart" : "/login"}>
           <button className="btn btn-icon">
+            {getTotalQty(cart) !== 0 && (
+              <div class="badge">{getTotalQty(cart)}</div>
+            )}
             <BsCart3 />
           </button>
         </Link>
         <Link to={auth.isLoggedIn ? "/wishlist" : "/login"}>
           <button className="btn btn-icon">
+            {wishlist.length !== 0 && (
+              <div class="badge">{wishlist.length}</div>
+            )}
             <AiOutlineHeart />
           </button>
         </Link>
-        <Link to={auth.isLoggedIn ? "/profile" : "/login"}>
-          <button className="btn btn-icon">
-            <CgProfile />
-          </button>
-        </Link>
+        <button
+          onClick={() => setShowProfileModal(!showProfileModal)}
+          className="btn btn-icon"
+        >
+          <CgProfile />
+        </button>
       </div>
+      {showProfileModal && <ProfileModal onClose={closeProfileModal} />}
     </header>
   );
 };
