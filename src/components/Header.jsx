@@ -16,7 +16,7 @@ export const Header = () => {
   const { cart } = useCart();
   const { wishlist } = useWishlist();
 
-  const [showProfileModal, setShowProfileModal] = useState(true);
+  const [showProfileModal, setShowProfileModal] = useState(false);
 
   const closeProfileModal = () => setShowProfileModal(false);
 
