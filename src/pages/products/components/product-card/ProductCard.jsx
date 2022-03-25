@@ -5,7 +5,6 @@ import { useAuth, useCart, useWishlist } from "../../../../contexts";
 import {
   addToCart,
   addToWishlist,
-  deleteFromCart,
   deleteFromWishlist,
   getOfferPrice,
 } from "../../../../utils/api";
@@ -54,27 +53,6 @@ export const ProductCard = ({ product }) => {
       if (status !== 201) return;
       setWishlist(data.wishlist);
     } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const removeItemFromCart = async () => {
-    try {
-      setLoading(true);
-      const { status, data } = await deleteFromCart(
-        auth.encodedToken,
-        product._id
-      );
-      if (status !== 200) {
-        setLoading(false);
-        return;
-      }
-      setCart(data.cart);
-      setIsItemAdded(false);
-      setLoading(false);
-      return;
-    } catch (error) {
-      setLoading(false);
       console.log(error);
     }
   };
@@ -128,12 +106,12 @@ export const ProductCard = ({ product }) => {
         {product.inStock ? (
           <button
             onClick={() =>
-              isItemAdded ? removeItemFromCart() : addProductToCart()
+              isItemAdded ? navigate("/cart") : addProductToCart()
             }
             disabled={loading}
             className="btn btn-primary"
           >
-            {isItemAdded ? "Remove from Cart" : "Add to Cart"}
+            {isItemAdded ? "Go to Cart" : "Add to Cart"}
           </button>
         ) : (
           <button className="btn btn-error" disabled>

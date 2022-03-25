@@ -54,12 +54,21 @@ header .btn {
   min-width: fit-content;
   font-size: 1.2rem;
   margin: 0 5px;
+  position: relative;
 }
 header .btn-icon:hover {
   background-color: var(--primary-hover);
 }
 header .btn-icon * {
   font-size: 2rem;
+}
+header .btn-icon .badge {
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: 1rem;
+  border-radius: 50%;
+  top: 0;
+  right: 0;
 }
 
 @media screen and (min-width: 760px) {
