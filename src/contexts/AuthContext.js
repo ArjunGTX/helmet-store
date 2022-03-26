@@ -19,7 +19,6 @@ export const AuthProvider = ({ children }) => {
     if (!auth.isLoggedIn) {
       navigate("/login");
     }
-    console.log(auth);
   }, [auth]);
   return (
     <AuthContext.Provider value={{ auth, setAuth }}>

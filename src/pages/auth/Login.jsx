@@ -80,7 +80,7 @@ export const Login = () => {
           value={loginData.email}
           onChange={handleInputChange}
         />
-        {loginErrors.email && <InputAlert message={loginErrors.email} />}
+        {loginErrors.email && <InputAlert message={loginErrors.email} className="mr-auto"/>}
         <input
           type="text"
           autoComplete="new-password"
@@ -90,7 +90,7 @@ export const Login = () => {
           onChange={handleInputChange}
           placeholder="Enter Password"
         />
-        {loginErrors.password && <InputAlert message={loginErrors.password} />}
+        {loginErrors.password && <InputAlert message={loginErrors.password} className="mr-auto" />}
         <div className="flex-row flex-center">
           <label htmlFor="terms" className="flex-row flex-center">
             <input
