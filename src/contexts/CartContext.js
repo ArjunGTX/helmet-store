@@ -1,5 +1,5 @@
 import { createContext, useState, useContext, useEffect } from "react";
-import { getCart } from "../utils/api";
+import { getCart, getProducts } from "../utils/api";
 import { useAuth } from "./AuthContext";
 
 const CartContext = createContext(null);
@@ -11,24 +11,27 @@ export const CartProvider = ({ children }) => {
 
   const [cart, setCart] = useState([]);
 
-  // useEffect(() => {
-  //   (async () => {
-  //     try {
-  //       if (!auth.isLoggedIn) return;
-  //       const { status, data } = await getCart(auth.encodedToken);
-  //       if (status !== 200) return;
-  //       setCart((cart) =>
-  //         cart.length !== 0
-  //           ? data.cart.map((item) =>
-  //               cart.find((prevItem) => item._id === prevItem._id)
-  //             )
-  //           : []
-  //       );
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   })();
-  // }, [auth.isLoggedIn, auth.userId]);
+  useEffect(() => {
+    (async () => {
+      try {
+        if (!auth.isLoggedIn) return;
+        const { status: productStatus, data: productData } =
+          await getProducts();
+        if (productStatus !== 200) return;
+        const { status: cartStatus, data: cartData } = await getCart(
+          auth.encodedToken
+        );
+        if (cartStatus !== 200) return;
+        setCart(
+          cartData.cart.filter((item) =>
+            productData.products.find((product) => product._id === item._id)
+          )
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, [auth.isLoggedIn]);
 
   return (
     <CartContext.Provider value={{ cart, setCart }}>

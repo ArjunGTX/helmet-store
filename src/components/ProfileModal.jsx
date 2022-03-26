@@ -4,12 +4,10 @@ import "../styles/components/profile-modal.css";
 import { useClickOutside } from "../utils/hooks";
 import { MdOutlineContactless } from "react-icons/md";
 import { FiSettings, FiHelpCircle, FiInfo } from "react-icons/fi";
-import { useAuth, useCart, useWishlist } from "../contexts";
+import { useAuth } from "../contexts";
 
 export const ProfileModal = ({ onClose }) => {
   const { setAuth } = useAuth();
-  const { setCart } = useCart();
-  const { setWishlist } = useWishlist();
 
   const modalRef = useRef(null);
 

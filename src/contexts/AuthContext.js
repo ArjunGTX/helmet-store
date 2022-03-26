@@ -7,11 +7,13 @@ export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
+
   const [auth, setAuth] = useState({
     userId: localStorage.getItem("userId"),
     isLoggedIn: JSON.parse(localStorage.getItem("isLoggedIn")),
     encodedToken: localStorage.getItem("encodedToken"),
   });
+
   useEffect(() => {
     localStorage.setItem("userId", auth.userId);
     localStorage.setItem("isLoggedIn", auth.isLoggedIn);
@@ -20,6 +22,7 @@ export const AuthProvider = ({ children }) => {
       navigate("/login");
     }
   }, [auth]);
+
   return (
     <AuthContext.Provider value={{ auth, setAuth }}>
       {children}
