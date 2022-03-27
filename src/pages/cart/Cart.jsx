@@ -11,12 +11,14 @@ import { CartCard, Checkout } from "./components";
 
 export const Cart = () => {
   const { cart } = useCart();
-  const checkoutDetails = {
+
+  const checkoutDetails = cart && {
     qty: getTotalQty(cart),
     price: getTotalCartPrice(cart),
     discount: getTotalDiscount(cart),
     deliveryCharge: getTotalDeliveryCharge(cart),
   };
+
   return (
     <>
       {cart.length !== 0 && (
@@ -24,7 +26,7 @@ export const Cart = () => {
       )}
       <div className="cart-container">
         <div className="items">
-          {cart.map((item) => (
+          {cart?.map((item) => (
             <CartCard item={item} key={item._id} />
           ))}
         </div>

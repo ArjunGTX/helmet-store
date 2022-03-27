@@ -6,7 +6,6 @@ import { CgProfile } from "react-icons/cg";
 import { FiMenu } from "react-icons/fi";
 import "../styles/components/header.css";
 import { useAuth, useCart, useSidebar, useWishlist } from "../contexts";
-import { getTotalQty } from "../utils/api";
 import { ProfileModal } from "./ProfileModal";
 
 export const Header = () => {
@@ -51,16 +50,16 @@ export const Header = () => {
         )}
         <Link to={auth.isLoggedIn ? "/cart" : "/login"}>
           <button className="btn btn-icon">
-            {getTotalQty(cart) !== 0 && (
-              <div class="badge">{getTotalQty(cart)}</div>
+            {cart.length !== 0 && auth.isLoggedIn && (
+              <div className="badge">{cart.length}</div>
             )}
             <BsCart3 />
           </button>
         </Link>
         <Link to={auth.isLoggedIn ? "/wishlist" : "/login"}>
           <button className="btn btn-icon">
-            {wishlist.length !== 0 && (
-              <div class="badge">{wishlist.length}</div>
+            {wishlist.length !== 0 && auth.isLoggedIn && (
+              <div className="badge">{wishlist.length}</div>
             )}
             <AiOutlineHeart />
           </button>

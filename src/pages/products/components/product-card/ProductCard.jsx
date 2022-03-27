@@ -57,6 +57,20 @@ export const ProductCard = ({ product }) => {
     }
   };
 
+  const handleWishlistChange = () =>
+    auth.isLoggedIn
+      ? isFavourite
+        ? removeProductFromWishlist()
+        : addProductToWishlist()
+      : navigate("/login");
+
+  const handleCartChange = () =>
+    auth.isLoggedIn
+      ? isItemAdded
+        ? navigate("/cart")
+        : addProductToCart()
+      : navigate("/login");
+
   const removeProductFromWishlist = async () => {
     try {
       const { status, data } = await deleteFromWishlist(
@@ -73,13 +87,8 @@ export const ProductCard = ({ product }) => {
 
   return (
     <div className="card">
-      <button
-        onClick={() =>
-          isFavourite ? removeProductFromWishlist() : addProductToWishlist()
-        }
-        className="btn btn-icon"
-      >
-        {isFavourite ? (
+      <button onClick={handleWishlistChange} className="btn btn-icon">
+        {isFavourite && auth.isLoggedIn ? (
           <AiFillHeart className="heart-fill" />
         ) : (
           <AiOutlineHeart />
@@ -105,13 +114,11 @@ export const ProductCard = ({ product }) => {
       <div className="card-bottom">
         {product.inStock ? (
           <button
-            onClick={() =>
-              isItemAdded ? navigate("/cart") : addProductToCart()
-            }
+            onClick={handleCartChange}
             disabled={loading}
             className="btn btn-primary"
           >
-            {isItemAdded ? "Go to Cart" : "Add to Cart"}
+            {auth.isLoggedIn && isItemAdded ? "Go to Cart" : "Add to Cart"}
           </button>
         ) : (
           <button className="btn btn-error" disabled>

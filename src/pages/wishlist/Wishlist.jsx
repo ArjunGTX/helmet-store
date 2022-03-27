@@ -16,7 +16,7 @@ export const Wishlist = () => {
         <h3 className="page-title">My Wishlist({wishlist.length})</h3>
       )}
       <div className="flex-row flex-center">
-        {wishlist.map((product) => (
+        {wishlist?.map((product) => (
           <ProductCard key={product._id} product={product} />
         ))}
         {wishlist.length === 0 && (

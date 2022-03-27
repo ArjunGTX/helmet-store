@@ -15,8 +15,6 @@ import {
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <AuthProvider>
         <Routes>
           <Route path="/" element={<PageContainer page={<Home />} />} />
           <Route path="/login" element={<PageContainer page={<Login />} />} />
@@ -42,8 +40,6 @@ const App = () => {
           />
           <Route path="/cart" element={<PageContainer page={<Cart />} />} />
         </Routes>
-      </AuthProvider>
-    </BrowserRouter>
   );
 };
 
