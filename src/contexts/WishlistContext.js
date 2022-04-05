@@ -1,5 +1,5 @@
 import { createContext, useState, useContext, useEffect } from "react";
-import { getProducts, getWishlist } from "../utils/api";
+import { getWishlist } from "../utils/api";
 import { useAuth } from "./AuthContext";
 
 const WishlistContext = createContext(null);
@@ -15,17 +15,9 @@ export const WishlistProvider = ({ children }) => {
     (async () => {
       try {
         if (!auth.isLoggedIn) return;
-        const { status: productStatus, data: productData } =
-          await getProducts();
-        if (productStatus !== 200) return;
-        const { status: wishlistStatus, data: wishlistData } =
-          await getWishlist(auth.encodedToken);
-        if (wishlistStatus !== 200) return;
-        setWishlist(
-          wishlistData.wishlist.filter((item) =>
-            productData.products.find((product) => product._id === item._id)
-          )
-        );
+        const { status, data } = await getWishlist(auth.encodedToken);
+        if (status !== 200) return;
+        setWishlist(data.wishlist);
       } catch (error) {
         console.log(error);
       }

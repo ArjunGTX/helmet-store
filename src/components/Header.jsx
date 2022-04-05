@@ -34,8 +34,9 @@ export const Header = () => {
             <FiMenu className="nav-icon" />
           </button>
         )}
-        <Link to="/" className="logo">
-          Helmet Store
+        <Link to="/" className="flex-row flex-center logo">
+          <img src="assets/images/logo.png" alt="logo" />
+          HELMET STORE
         </Link>
       </div>
       <div className="header-middle">

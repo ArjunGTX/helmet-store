@@ -19,6 +19,12 @@ header {
   margin: 0 var(--sp-lg);
   cursor: pointer;
 }
+.logo img {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  margin-right: var(--sp-md);
+}
 .header-middle {
   display: flex;
   position: relative;
@@ -74,6 +80,10 @@ header .btn-icon .badge {
 @media screen and (min-width: 760px) {
   header {
     min-height: 6rem;
+  }
+  header .logo img {
+    width: 7rem;
+    height: 7rem;
   }
   header .btn {
     margin: 0 var(--sp-sm);
