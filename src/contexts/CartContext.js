@@ -17,7 +17,6 @@ export const CartProvider = ({ children }) => {
         if (!auth.isLoggedIn) return;
         const { status, data } = await getCart(auth.encodedToken);
         if (status !== 200) return;
-        console.log(data.cart);
         setCart(data.cart);
       } catch (error) {
         console.log(error);
