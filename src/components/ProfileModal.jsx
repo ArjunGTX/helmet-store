@@ -14,10 +14,10 @@ export const ProfileModal = ({ onClose }) => {
   useClickOutside(modalRef, onClose);
 
   const handleLogout = () => {
-    setAuth((auth) => ({
-      ...auth,
+    setAuth({
       isLoggedIn: false,
-    }));
+      encodedToken: "",
+    });
     onClose();
   };
 

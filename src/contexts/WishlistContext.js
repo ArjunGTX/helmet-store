@@ -7,14 +7,14 @@ const WishlistContext = createContext(null);
 export const useWishlist = () => useContext(WishlistContext);
 
 export const WishlistProvider = ({ children }) => {
-  const { auth } = useAuth();
+  const { auth: {isLoggedIn} } = useAuth();
 
   const [wishlist, setWishlist] = useState([]);
 
   useEffect(() => {
     (async () => {
       try {
-        if (!auth.isLoggedIn) return;
+        if (!isLoggedIn) return;
         const { status, data } = await getWishlist(auth.encodedToken);
         if (status !== 200) return;
         setWishlist(data.wishlist);
@@ -22,7 +22,7 @@ export const WishlistProvider = ({ children }) => {
         console.log(error);
       }
     })();
-  }, [auth.isLoggedIn]);
+  }, [isLoggedIn]);
 
   return (
     <WishlistContext.Provider value={{ wishlist, setWishlist }}>

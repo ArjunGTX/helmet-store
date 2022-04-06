@@ -52,18 +52,17 @@ export const SignUp = () => {
         return;
       }
       setLoading(true);
-      const response = await signUp(
+      const { status, data } = await signUp(
         signUpData.firstName,
         signUpData.lastName,
         signUpData.email,
         signUpData.password
       );
       setLoading(false);
-      if (response.status !== 201) return;
+      if (status !== 201) return;
       setAuth({
-        userId: response.data.createdUser._id,
         isLoggedIn: true,
-        encodedToken: response.data.encodedToken,
+        encodedToken: data.encodedToken,
       });
       navigate("/");
     } catch (error) {

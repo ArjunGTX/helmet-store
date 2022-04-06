@@ -12,7 +12,7 @@ import { ProductRating } from "./ProductRating";
 
 export const ProductCard = ({ product }) => {
   const navigate = useNavigate();
-  const { auth } = useAuth();
+  const { auth: {isLoggedIn, encodedToken} } = useAuth();
   const { cart, setCart } = useCart();
   const { wishlist, setWishlist } = useWishlist();
 
@@ -24,12 +24,12 @@ export const ProductCard = ({ product }) => {
 
   const addProductToCart = async () => {
     try {
-      if (!auth.isLoggedIn) {
+      if (!isLoggedIn) {
         navigate("/login");
         return;
       }
       setLoading(true);
-      const { status, data } = await addToCart(auth.encodedToken, product);
+      const { status, data } = await addToCart(encodedToken, product);
       if (status !== 201) {
         setLoading(false);
         return;
@@ -45,11 +45,11 @@ export const ProductCard = ({ product }) => {
 
   const addProductToWishlist = async () => {
     try {
-      if (!auth.isLoggedIn) {
+      if (!isLoggedIn) {
         navigate("/login");
         return;
       }
-      const { status, data } = await addToWishlist(auth.encodedToken, product);
+      const { status, data } = await addToWishlist(encodedToken, product);
       if (status !== 201) return;
       setWishlist(data.wishlist);
     } catch (error) {
@@ -58,14 +58,14 @@ export const ProductCard = ({ product }) => {
   };
 
   const handleWishlistChange = () =>
-    auth.isLoggedIn
+    isLoggedIn
       ? isFavourite
         ? removeProductFromWishlist()
         : addProductToWishlist()
       : navigate("/login");
 
   const handleCartChange = () =>
-    auth.isLoggedIn
+    isLoggedIn
       ? isItemAdded
         ? navigate("/cart")
         : addProductToCart()
@@ -74,7 +74,7 @@ export const ProductCard = ({ product }) => {
   const removeProductFromWishlist = async () => {
     try {
       const { status, data } = await deleteFromWishlist(
-        auth.encodedToken,
+        encodedToken,
         product._id
       );
       if (status !== 200) return;
@@ -88,7 +88,7 @@ export const ProductCard = ({ product }) => {
   return (
     <div className="card">
       <button onClick={handleWishlistChange} className="btn btn-icon">
-        {isFavourite && auth.isLoggedIn ? (
+        {isFavourite && isLoggedIn ? (
           <AiFillHeart className="heart-fill" />
         ) : (
           <AiOutlineHeart />
@@ -118,7 +118,7 @@ export const ProductCard = ({ product }) => {
             disabled={loading}
             className="btn btn-primary"
           >
-            {auth.isLoggedIn && isItemAdded ? "Go to Cart" : "Add to Cart"}
+            {isLoggedIn && isItemAdded ? "Go to Cart" : "Add to Cart"}
           </button>
         ) : (
           <button className="btn btn-error" disabled>

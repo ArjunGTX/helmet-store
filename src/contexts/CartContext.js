@@ -7,14 +7,16 @@ const CartContext = createContext(null);
 export const useCart = () => useContext(CartContext);
 
 export const CartProvider = ({ children }) => {
-  const { auth } = useAuth();
+  const {
+    auth: { isLoggedIn },
+  } = useAuth();
 
   const [cart, setCart] = useState([]);
 
   useEffect(() => {
     (async () => {
       try {
-        if (!auth.isLoggedIn) return;
+        if (!isLoggedIn) return;
         const { status, data } = await getCart(auth.encodedToken);
         if (status !== 200) return;
         setCart(data.cart);
@@ -22,7 +24,7 @@ export const CartProvider = ({ children }) => {
         console.log(error);
       }
     })();
-  }, [auth.isLoggedIn]);
+  }, [isLoggedIn]);
 
   return (
     <CartContext.Provider value={{ cart, setCart }}>

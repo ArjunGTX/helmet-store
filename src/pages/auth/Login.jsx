@@ -39,13 +39,12 @@ export const Login = () => {
   const loginRequest = async (email, password) => {
     try {
       setLoading(true);
-      const response = await login(email, password);
+      const {status, data} = await login(email, password);
       setLoading(false);
-      if (!response.status === 200) return;
+      if (!status === 200) return;
       setAuth({
-        userId: response.data.foundUser._id,
         isLoggedIn: true,
-        encodedToken: response.data.encodedToken,
+        encodedToken: data.encodedToken,
       });
       navigate(-1);
     } catch (error) {

@@ -11,8 +11,9 @@ export const CategoryProvider = ({ children }) => {
   useEffect(() => {
     (async () => {
       try {
-        const response = await getCategories();
-        setCategories(response.data.categories);
+        const { status, data } = await getCategories();
+        if (status !== 200) return;
+        setCategories(data.categories);
       } catch (error) {
         console.log(error);
       }

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AiOutlineHeart, AiOutlineSearch } from "react-icons/ai";
 import { BsCart3 } from "react-icons/bs";
 import { CgProfile } from "react-icons/cg";
@@ -9,9 +9,12 @@ import { useAuth, useCart, useSidebar, useWishlist } from "../contexts";
 import { ProfileModal } from "./ProfileModal";
 
 export const Header = () => {
+  const navigate = useNavigate();
   const { pathname } = useLocation();
   const { toggleSidebar } = useSidebar();
-  const { auth } = useAuth();
+  const {
+    auth: { isLoggedIn },
+  } = useAuth();
   const { cart } = useCart();
   const { wishlist } = useWishlist();
 
@@ -20,7 +23,7 @@ export const Header = () => {
   const closeProfileModal = () => setShowProfileModal(false);
 
   const showLoginButton = () => {
-    if (auth.isLoggedIn) return false;
+    if (isLoggedIn) return false;
     if (pathname === "/" || pathname === "/products") return true;
     return false;
   };
@@ -49,24 +52,28 @@ export const Header = () => {
             <button className="btn btn-secondary">Log In</button>
           </Link>
         )}
-        <Link to={auth.isLoggedIn ? "/cart" : "/login"}>
+        <Link to="/cart">
           <button className="btn btn-icon">
-            {cart.length !== 0 && auth.isLoggedIn && (
+            {cart.length !== 0 && isLoggedIn && (
               <div className="badge">{cart.length}</div>
             )}
             <BsCart3 />
           </button>
         </Link>
-        <Link to={auth.isLoggedIn ? "/wishlist" : "/login"}>
+        <Link to="/wishlist">
           <button className="btn btn-icon">
-            {wishlist.length !== 0 && auth.isLoggedIn && (
+            {wishlist.length !== 0 && isLoggedIn && (
               <div className="badge">{wishlist.length}</div>
             )}
             <AiOutlineHeart />
           </button>
         </Link>
         <button
-          onClick={() => setShowProfileModal(!showProfileModal)}
+          onClick={() =>
+            isLoggedIn
+              ? setShowProfileModal(!showProfileModal)
+              : navigate("/login")
+          }
           className="btn btn-icon"
         >
           <CgProfile />
