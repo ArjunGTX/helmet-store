@@ -17,21 +17,15 @@ const App = () => {
   return (
     <Routes>
       <Route path="/" element={<PageContainer page={<Home />} />} />
-      <Route
-        path="/login"
-        element={<PageContainer page={<Login />} authPage />}
-      />
-      <Route
-        path="/sign-up"
-        element={<PageContainer page={<SignUp />} authPage />}
-      />
+      <Route path="/login" element={<PageContainer page={<Login />} />} />
+      <Route path="/sign-up" element={<PageContainer page={<SignUp />} />} />
       <Route
         path="/forgot-password"
-        element={<PageContainer page={<ForgotPassword />} authPage />}
+        element={<PageContainer page={<ForgotPassword />} />}
       />
       <Route
         path="/reset-password"
-        element={<PageContainer page={<ResetPassword />} authPage />}
+        element={<PageContainer page={<ResetPassword />} />}
       />
       <Route path="/products" element={<PageContainer page={<Products />} />} />
       <Route
