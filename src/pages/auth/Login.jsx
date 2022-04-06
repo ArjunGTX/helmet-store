@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "../../styles/pages/auth.css";
 import { login, validateLoginData } from "../../utils/api";
@@ -7,6 +7,14 @@ import { useAuth } from "../../contexts";
 
 export const Login = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  console.log(location);
+  const from = location.state?.from
+    ? location.state.from.pathname === "/sign-up"
+      ? "/"
+      : location.state.from.pathname
+    : -1;
+  console.log(from);
   const { setAuth } = useAuth();
 
   const [loading, setLoading] = useState(false);
@@ -39,14 +47,16 @@ export const Login = () => {
   const loginRequest = async (email, password) => {
     try {
       setLoading(true);
-      const {status, data} = await login(email, password);
+      const { status, data } = await login(email, password);
       setLoading(false);
       if (!status === 200) return;
       setAuth({
         isLoggedIn: true,
         encodedToken: data.encodedToken,
       });
-      navigate(-1);
+      navigate(from, {
+        replace: true,
+      });
     } catch (error) {
       setLoading(false);
       console.log(error);
@@ -79,7 +89,9 @@ export const Login = () => {
           value={loginData.email}
           onChange={handleInputChange}
         />
-        {loginErrors.email && <InputAlert message={loginErrors.email} className="mr-auto"/>}
+        {loginErrors.email && (
+          <InputAlert message={loginErrors.email} className="mr-auto" />
+        )}
         <input
           type="text"
           autoComplete="new-password"
@@ -89,7 +101,9 @@ export const Login = () => {
           onChange={handleInputChange}
           placeholder="Enter Password"
         />
-        {loginErrors.password && <InputAlert message={loginErrors.password} className="mr-auto" />}
+        {loginErrors.password && (
+          <InputAlert message={loginErrors.password} className="mr-auto" />
+        )}
         <div className="flex-row flex-center">
           <label htmlFor="terms" className="flex-row flex-center">
             <input

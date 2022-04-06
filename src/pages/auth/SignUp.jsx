@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "../../styles/pages/auth.css";
 import { signUp, validateSignUpData } from "../../utils/api";
@@ -7,6 +7,7 @@ import { useAuth } from "../../contexts";
 
 export const SignUp = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { setAuth } = useAuth();
   const [loading, setLoading] = useState(false);
   const [signUpData, setSignUpData] = useState({
@@ -148,7 +149,14 @@ export const SignUp = () => {
         {signUpErrors.terms && <InputAlert message={signUpErrors.terms} />}
         <button className="btn btn-info btn-block">Create New Account</button>
         <button type="button" className="btn btn-link btn-block">
-          <Link to="/login">Already have an account</Link>
+          <Link
+            to="/login"
+            state={{
+              from: location,
+            }}
+          >
+            Already have an account
+          </Link>
         </button>
       </form>
     </div>

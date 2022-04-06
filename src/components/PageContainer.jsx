@@ -2,9 +2,10 @@ import React from "react";
 import { Header } from "./Header";
 import "../styles/components/page-container.css";
 import { SidebarProvider, useAuth } from "../contexts";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 
 export const PageContainer = ({ page, requiresAuth, authPage }) => {
+  const location = useLocation();
   const {
     auth: { isLoggedIn },
   } = useAuth();
@@ -16,13 +17,13 @@ export const PageContainer = ({ page, requiresAuth, authPage }) => {
         isLoggedIn ? (
           page
         ) : (
-          <Navigate to="/login" replace />
-        )
-      ) : authPage ? (
-        isLoggedIn ? (
-          <Navigate to="/" replace />
-        ) : (
-          page
+          <Navigate
+            to="/login"
+            replace
+            state={{
+              from: location,
+            }}
+          />
         )
       ) : (
         page
