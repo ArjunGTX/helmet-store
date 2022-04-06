@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "../../styles/pages/auth.css";
@@ -8,7 +9,10 @@ import { useAuth } from "../../contexts";
 export const SignUp = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { setAuth } = useAuth();
+  const {
+    auth: { isLoggedIn },
+    setAuth,
+  } = useAuth();
   const [loading, setLoading] = useState(false);
   const [signUpData, setSignUpData] = useState({
     firstName: "",
@@ -27,6 +31,10 @@ export const SignUp = () => {
     confirmPassword: "",
     terms: "",
   });
+
+  useEffect(() => {
+    isLoggedIn && navigate("/");
+  }, []);
 
   const handleInputChange = (e) => {
     setSignUpErrors((signUpErrors) => ({

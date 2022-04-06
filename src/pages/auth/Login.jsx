@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import "../../styles/pages/auth.css";
@@ -8,14 +9,15 @@ import { useAuth } from "../../contexts";
 export const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  console.log(location);
   const from = location.state?.from
     ? location.state.from.pathname === "/sign-up"
       ? "/"
       : location.state.from.pathname
     : -1;
-  console.log(from);
-  const { setAuth } = useAuth();
+  const {
+    auth: { isLoggedIn },
+    setAuth,
+  } = useAuth();
 
   const [loading, setLoading] = useState(false);
   const [loginData, setLoginData] = useState({
@@ -28,6 +30,10 @@ export const Login = () => {
     email: "",
     password: "",
   });
+
+  useEffect(() => {
+    isLoggedIn && navigate("/");
+  }, []);
 
   const handleInputChange = (e) => {
     if (e.target.type === "checkbox") {
