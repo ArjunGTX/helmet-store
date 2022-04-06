@@ -1,6 +1,5 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
 import "../../styles/pages/auth.css";
 import { login, validateLoginData } from "../../utils/api";
 import { InputAlert } from "../../components";
