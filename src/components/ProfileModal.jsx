@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../styles/components/profile-modal.css";
 import { useClickOutside } from "../utils/hooks";
 import { MdOutlineContactless } from "react-icons/md";
@@ -7,6 +7,7 @@ import { FiSettings, FiHelpCircle, FiInfo } from "react-icons/fi";
 import { useAuth } from "../contexts";
 
 export const ProfileModal = ({ onClose }) => {
+  const navigate = useNavigate();
   const { setAuth } = useAuth();
 
   const modalRef = useRef(null);
@@ -19,6 +20,7 @@ export const ProfileModal = ({ onClose }) => {
       encodedToken: "",
     });
     onClose();
+    navigate("/");
   };
 
   return (

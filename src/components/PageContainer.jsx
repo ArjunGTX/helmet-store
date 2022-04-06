@@ -4,7 +4,7 @@ import "../styles/components/page-container.css";
 import { SidebarProvider, useAuth } from "../contexts";
 import { Navigate } from "react-router-dom";
 
-export const PageContainer = ({ page, requiresAuth }) => {
+export const PageContainer = ({ page, requiresAuth, authPage }) => {
   const {
     auth: { isLoggedIn },
   } = useAuth();
@@ -17,6 +17,12 @@ export const PageContainer = ({ page, requiresAuth }) => {
           page
         ) : (
           <Navigate to="/login" replace />
+        )
+      ) : authPage ? (
+        isLoggedIn ? (
+          <Navigate to="/" replace />
+        ) : (
+          page
         )
       ) : (
         page
