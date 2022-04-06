@@ -6,6 +6,7 @@ import {
   ForgotPassword,
   Home,
   Login,
+  PageNotFound,
   Products,
   ResetPassword,
   SignUp,
@@ -41,6 +42,7 @@ const App = () => {
         path="/cart"
         element={<PageContainer page={<Cart />} requiresAuth />}
       />
+      <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
 };
