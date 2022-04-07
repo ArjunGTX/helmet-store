@@ -1,12 +1,20 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AiOutlineHeart, AiOutlineSearch } from "react-icons/ai";
 import { BsCart3 } from "react-icons/bs";
 import { CgProfile } from "react-icons/cg";
 import { FiMenu } from "react-icons/fi";
 import "../styles/components/header.css";
-import { useAuth, useCart, useSidebar, useWishlist } from "../contexts";
+import {
+  useAuth,
+  useCart,
+  useFilters,
+  useSidebar,
+  useWishlist,
+} from "../contexts";
 import { ProfileModal } from "./ProfileModal";
+import { useDebounce } from "../utils/hooks";
+import { searchProduct } from "../actions/filter-action";
 
 export const Header = () => {
   const navigate = useNavigate();
@@ -17,8 +25,21 @@ export const Header = () => {
   } = useAuth();
   const { cart } = useCart();
   const { wishlist } = useWishlist();
+  const { filterDispatch } = useFilters();
 
   const [showProfileModal, setShowProfileModal] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filterBySearch = () => {
+    filterDispatch(searchProduct(searchQuery));
+    console.log("called");
+  };
+
+  const debouncedFilterBySearch = useDebounce(filterBySearch, 400);
+
+  useEffect(() => {
+    debouncedFilterBySearch();
+  }, [searchQuery]);
 
   const closeProfileModal = () => setShowProfileModal(false);
 
@@ -27,6 +48,8 @@ export const Header = () => {
     if (pathname === "/" || pathname === "/products") return true;
     return false;
   };
+
+  const handleSearchChange = (e) => setSearchQuery(e.target.value);
 
   return (
     <header>
@@ -43,7 +66,13 @@ export const Header = () => {
         </Link>
       </div>
       <div className="header-middle">
-        <input type="text" className="search-input" />
+        <input
+          type="text"
+          className="search-input"
+          placeholder="Search Products..."
+          value={searchQuery}
+          onChange={handleSearchChange}
+        />
         <AiOutlineSearch className="search-icon" />
       </div>
       <div className="header-right">

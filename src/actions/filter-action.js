@@ -46,3 +46,8 @@ export const filterPrice = (price) => ({
 export const clearFilters = () => ({
   type: "CLEAR_FILTERS",
 });
+
+export const searchProduct = (query) => ({
+  type: "SEARCH_PRODUCTS",
+  payload: query,
+});

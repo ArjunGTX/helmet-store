@@ -1,5 +1,6 @@
 import axios from "axios";
 import { getOfferPrice } from ".";
+import { compareStrings } from "../helpers";
 
 export const getProducts = async () => {
   return axios.get("/api/products");
@@ -43,6 +44,11 @@ export const getFilteredProducts = (products, filters) => {
         filters.brands.length === 0
           ? true
           : filters.brands.find((brand) => brand === product.brand)
+      )
+      .filter((product) =>
+        compareStrings(product.name, filters.search)
+          ? compareStrings(product.name, filters.search)
+          : compareStrings(product.description, filters.search)
       );
   }
 };

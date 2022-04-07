@@ -3,6 +3,7 @@ export const initialFilters = {
   includeOutOfStock: false,
   fastDelivery: false,
   sortBy: "",
+  search: "",
   category: {
     racing: true,
     street: true,
@@ -15,6 +16,11 @@ export const initialFilters = {
 
 export const filterReducer = (filters, action) => {
   switch (action.type) {
+    case "SEARCH_PRODUCTS":
+      return {
+        ...filters,
+        search: action.payload,
+      };
     case "SORT_ITEMS":
       return { ...filters, sortBy: action.payload };
     case "TOGGLE_STOCK":
@@ -51,6 +57,7 @@ export const filterReducer = (filters, action) => {
       return { ...filters, rating: action.payload };
     case "FILTER_PRICE":
       return { ...filters, priceRange: action.payload };
+    default:
     case "CLEAR_FILTERS":
       return initialFilters;
   }
