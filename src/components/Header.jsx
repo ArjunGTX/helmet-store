@@ -52,7 +52,7 @@ export const Header = () => {
 
   const handleSearchFormSubmit = (e) => {
     e.preventDefault();
-    filterBySearch();
+    filterBySearch(searchQuery);
   };
 
   return (

@@ -57,8 +57,12 @@ export const filterReducer = (filters, action) => {
       return { ...filters, rating: action.payload };
     case "FILTER_PRICE":
       return { ...filters, priceRange: action.payload };
-    default:
     case "CLEAR_FILTERS":
+      return {
+        ...initialFilters,
+        search: filters.search,
+      };
+    default:
       return initialFilters;
   }
 };
