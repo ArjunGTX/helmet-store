@@ -1,5 +1,6 @@
 import axios from "axios";
 import { getOfferPrice } from ".";
+import { compareStrings } from "../helpers";
 
 export const getProducts = async () => {
   return axios.get("/api/products");
@@ -29,6 +30,11 @@ export const getFilteredProducts = (products, filters) => {
   if (products && filters) {
     const sortedProducts = getSortedItems(products, filters.sortBy);
     return sortedProducts
+      .filter((product) =>
+        compareStrings(product.name, filters.search)
+          ? compareStrings(product.name, filters.search)
+          : compareStrings(product.description, filters.search)
+      )
       .filter((product) => (filters.includeOutOfStock ? true : product.inStock))
       .filter((product) => (filters.fastDelivery ? product.fastDelivery : true))
       .filter((product) => filters.category[product.categoryName])
