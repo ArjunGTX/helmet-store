@@ -30,6 +30,11 @@ export const getFilteredProducts = (products, filters) => {
   if (products && filters) {
     const sortedProducts = getSortedItems(products, filters.sortBy);
     return sortedProducts
+      .filter((product) =>
+        compareStrings(product.name, filters.search)
+          ? compareStrings(product.name, filters.search)
+          : compareStrings(product.description, filters.search)
+      )
       .filter((product) => (filters.includeOutOfStock ? true : product.inStock))
       .filter((product) => (filters.fastDelivery ? product.fastDelivery : true))
       .filter((product) => filters.category[product.categoryName])
@@ -44,11 +49,6 @@ export const getFilteredProducts = (products, filters) => {
         filters.brands.length === 0
           ? true
           : filters.brands.find((brand) => brand === product.brand)
-      )
-      .filter((product) =>
-        compareStrings(product.name, filters.search)
-          ? compareStrings(product.name, filters.search)
-          : compareStrings(product.description, filters.search)
       );
   }
 };

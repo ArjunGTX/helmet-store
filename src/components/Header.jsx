@@ -30,15 +30,14 @@ export const Header = () => {
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
-  const filterBySearch = () => {
-    filterDispatch(searchProduct(searchQuery));
-    console.log("called");
+  const filterBySearch = (query) => {
+    filterDispatch(searchProduct(query));
   };
 
-  const debouncedFilterBySearch = useDebounce(filterBySearch, 400);
+  const debouncedFilterBySearch = useDebounce(filterBySearch, 500);
 
   useEffect(() => {
-    debouncedFilterBySearch();
+    debouncedFilterBySearch(searchQuery);
   }, [searchQuery]);
 
   const closeProfileModal = () => setShowProfileModal(false);
@@ -50,6 +49,11 @@ export const Header = () => {
   };
 
   const handleSearchChange = (e) => setSearchQuery(e.target.value);
+
+  const handleSearchFormSubmit = (e) => {
+    e.preventDefault();
+    filterBySearch();
+  };
 
   return (
     <header>
@@ -65,7 +69,7 @@ export const Header = () => {
           HELMET STORE
         </Link>
       </div>
-      <div className="header-middle">
+      <form className="header-middle" onSubmit={handleSearchFormSubmit}>
         <input
           type="text"
           className="search-input"
@@ -73,8 +77,11 @@ export const Header = () => {
           value={searchQuery}
           onChange={handleSearchChange}
         />
-        <AiOutlineSearch className="search-icon" />
-      </div>
+        <AiOutlineSearch
+          className="search-icon"
+          onClick={() => filterBySearch(searchQuery)}
+        />
+      </form>
       <div className="header-right">
         {showLoginButton() && (
           <Link to={"/login"}>
