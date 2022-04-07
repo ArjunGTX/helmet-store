@@ -11,7 +11,9 @@ import {
 
 export const CartCard = ({ item }) => {
   const { setCart } = useCart();
-  const { auth } = useAuth();
+  const {
+    auth: { encodedToken },
+  } = useAuth();
   const { wishlist, setWishlist } = useWishlist();
 
   const isFavourite = wishlist.some((product) => product._id === item._id);
@@ -22,7 +24,7 @@ export const CartCard = ({ item }) => {
         type: type,
       };
       const { status, data } = await updateCartCount(
-        auth.encodedToken,
+        encodedToken,
         item._id,
         action
       );
@@ -35,7 +37,7 @@ export const CartCard = ({ item }) => {
 
   const addProductToWishlist = async () => {
     try {
-      const { status, data } = await addToWishlist(auth.encodedToken, item);
+      const { status, data } = await addToWishlist(encodedToken, item);
       if (status !== 201) return;
       setWishlist(data.wishlist);
     } catch (error) {
@@ -45,10 +47,7 @@ export const CartCard = ({ item }) => {
 
   const removeProductFromWishlist = async () => {
     try {
-      const { status, data } = await deleteFromWishlist(
-        auth.encodedToken,
-        item._id
-      );
+      const { status, data } = await deleteFromWishlist(encodedToken, item._id);
       if (status !== 200) return;
       setWishlist(data.wishlist);
       return;
@@ -59,10 +58,7 @@ export const CartCard = ({ item }) => {
 
   const removeItemFromCart = async () => {
     try {
-      const { status, data } = await deleteFromCart(
-        auth.encodedToken,
-        item._id
-      );
+      const { status, data } = await deleteFromCart(encodedToken, item._id);
       if (status !== 200) return;
       setCart(data.cart);
       return;

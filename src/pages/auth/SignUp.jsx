@@ -1,5 +1,5 @@
-import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../../styles/pages/auth.css";
 import { signUp, validateSignUpData } from "../../utils/api";
 import { InputAlert } from "../../components";
@@ -7,7 +7,11 @@ import { useAuth } from "../../contexts";
 
 export const SignUp = () => {
   const navigate = useNavigate();
-  const { setAuth } = useAuth();
+  const location = useLocation();
+  const {
+    auth: { isLoggedIn },
+    setAuth,
+  } = useAuth();
   const [loading, setLoading] = useState(false);
   const [signUpData, setSignUpData] = useState({
     firstName: "",
@@ -26,6 +30,10 @@ export const SignUp = () => {
     confirmPassword: "",
     terms: "",
   });
+
+  useEffect(() => {
+    isLoggedIn && navigate("/");
+  }, []);
 
   const handleInputChange = (e) => {
     setSignUpErrors((signUpErrors) => ({
@@ -52,18 +60,17 @@ export const SignUp = () => {
         return;
       }
       setLoading(true);
-      const response = await signUp(
+      const { status, data } = await signUp(
         signUpData.firstName,
         signUpData.lastName,
         signUpData.email,
         signUpData.password
       );
       setLoading(false);
-      if (response.status !== 201) return;
+      if (status !== 201) return;
       setAuth({
-        userId: response.data.createdUser._id,
         isLoggedIn: true,
-        encodedToken: response.data.encodedToken,
+        encodedToken: data.encodedToken,
       });
       navigate("/");
     } catch (error) {
@@ -149,7 +156,14 @@ export const SignUp = () => {
         {signUpErrors.terms && <InputAlert message={signUpErrors.terms} />}
         <button className="btn btn-info btn-block">Create New Account</button>
         <button type="button" className="btn btn-link btn-block">
-          <Link to="/login">Already have an account</Link>
+          <Link
+            to="/login"
+            state={{
+              from: location,
+            }}
+          >
+            Already have an account
+          </Link>
         </button>
       </form>
     </div>

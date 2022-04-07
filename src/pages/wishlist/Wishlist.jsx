@@ -1,15 +1,11 @@
-import { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useAuth, useWishlist } from "../../contexts";
+import { Link } from "react-router-dom";
+import { useWishlist } from "../../contexts";
 import "../../styles/pages/products.css";
 import { ProductCard } from "../products/components";
 
 export const Wishlist = () => {
-  const navigate = useNavigate();
-  const { auth } = useAuth();
   const { wishlist } = useWishlist();
 
-  useEffect(() => !auth.isLoggedIn && navigate("/login"), []);
   return (
     <>
       {wishlist.length !== 0 && (

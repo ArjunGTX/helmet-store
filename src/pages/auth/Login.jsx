@@ -1,5 +1,5 @@
-import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../../styles/pages/auth.css";
 import { login, validateLoginData } from "../../utils/api";
 import { InputAlert } from "../../components";
@@ -7,7 +7,16 @@ import { useAuth } from "../../contexts";
 
 export const Login = () => {
   const navigate = useNavigate();
-  const { setAuth } = useAuth();
+  const location = useLocation();
+  const from = location.state?.from
+    ? location.state.from.pathname === "/sign-up"
+      ? "/"
+      : location.state.from.pathname
+    : -1;
+  const {
+    auth: { isLoggedIn },
+    setAuth,
+  } = useAuth();
 
   const [loading, setLoading] = useState(false);
   const [loginData, setLoginData] = useState({
@@ -20,6 +29,10 @@ export const Login = () => {
     email: "",
     password: "",
   });
+
+  useEffect(() => {
+    isLoggedIn && navigate("/");
+  }, []);
 
   const handleInputChange = (e) => {
     if (e.target.type === "checkbox") {
@@ -39,15 +52,16 @@ export const Login = () => {
   const loginRequest = async (email, password) => {
     try {
       setLoading(true);
-      const response = await login(email, password);
+      const { status, data } = await login(email, password);
       setLoading(false);
-      if (!response.status === 200) return;
+      if (!status === 200) return;
       setAuth({
-        userId: response.data.foundUser._id,
         isLoggedIn: true,
-        encodedToken: response.data.encodedToken,
+        encodedToken: data.encodedToken,
       });
-      navigate(-1);
+      navigate(from, {
+        replace: true,
+      });
     } catch (error) {
       setLoading(false);
       console.log(error);
@@ -80,7 +94,9 @@ export const Login = () => {
           value={loginData.email}
           onChange={handleInputChange}
         />
-        {loginErrors.email && <InputAlert message={loginErrors.email} className="mr-auto"/>}
+        {loginErrors.email && (
+          <InputAlert message={loginErrors.email} className="mr-auto" />
+        )}
         <input
           type="text"
           autoComplete="new-password"
@@ -90,7 +106,9 @@ export const Login = () => {
           onChange={handleInputChange}
           placeholder="Enter Password"
         />
-        {loginErrors.password && <InputAlert message={loginErrors.password} className="mr-auto" />}
+        {loginErrors.password && (
+          <InputAlert message={loginErrors.password} className="mr-auto" />
+        )}
         <div className="flex-row flex-center">
           <label htmlFor="terms" className="flex-row flex-center">
             <input
