@@ -5,14 +5,16 @@ import { BsCart3 } from "react-icons/bs";
 import { CgProfile } from "react-icons/cg";
 import { FiMenu } from "react-icons/fi";
 import "../styles/components/header.css";
-import { useCart, useFilters, useSidebar, useWishlist } from "../contexts";
+import { useCart, useSidebar, useWishlist } from "../contexts";
 import { ProfileModal } from "./ProfileModal";
 import { useDebounce } from "../utils/hooks";
-import { searchProduct } from "../actions/filter-action";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { selectAuth } from "../redux/slices/auth";
+import { search } from "../redux/slices/filter";
 
 export const Header = () => {
+  const dispatch = useDispatch();
+
   const { isLoggedIn } = useSelector(selectAuth);
 
   const navigate = useNavigate();
@@ -21,13 +23,12 @@ export const Header = () => {
 
   const { cart } = useCart();
   const { wishlist } = useWishlist();
-  const { filterDispatch } = useFilters();
 
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
   const filterBySearch = (query) => {
-    filterDispatch(searchProduct(query));
+    dispatch(search(query));
   };
 
   const debouncedFilterBySearch = useDebounce(filterBySearch, 500);

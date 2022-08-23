@@ -2,9 +2,11 @@ import React, { useRef, useState, useEffect } from "react";
 import "../../styles/pages/products.css";
 import { Filters, ProductCard } from "./components";
 import { GrClose } from "react-icons/gr";
-import { useFilters, useSidebar } from "../../contexts";
+import { useSidebar } from "../../contexts";
 import { useClickOutside } from "../../utils/hooks";
 import { getFilteredProducts, getProducts } from "../../utils/api";
+import { useSelector } from "react-redux";
+import { selectFilters } from "../../redux/slices/filter";
 
 export const Products = () => {
   const { isSidebarActive, toggleSidebar } = useSidebar();
@@ -12,7 +14,7 @@ export const Products = () => {
   const closeSidebar = () => toggleSidebar(false);
   useClickOutside(sidebarRef, closeSidebar);
 
-  const { filters } = useFilters();
+  const filters = useSelector(selectFilters);
 
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
