@@ -1,49 +1,43 @@
 import React, { useState } from "react";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
-import { useCart, useWishlist } from "../../../../contexts";
+import { useWishlist } from "../../../../contexts";
 import {
-  addToCart,
   addToWishlist,
   deleteFromWishlist,
   getOfferPrice,
 } from "../../../../utils/api";
 import { ProductRating } from "./ProductRating";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { selectAuth } from "../../../../redux/slices/auth";
+import { selectCart } from "../../../../redux/slices/cart";
+import { addToCart } from "../../../../redux/services/cart";
 
 export const ProductCard = ({ product }) => {
   const { isLoggedIn, encodedToken } = useSelector(selectAuth);
+  const cart = useSelector(selectCart);
+
+  const dispatch = useDispatch();
 
   const navigate = useNavigate();
 
-  const { cart, setCart } = useCart();
   const { wishlist, setWishlist } = useWishlist();
 
-  const [loading, setLoading] = useState(false);
   const [isItemAdded, setIsItemAdded] = useState(
     cart.some((item) => item._id === product._id)
   );
   const isFavourite = wishlist.some((item) => item._id === product._id);
 
-  const addProductToCart = async () => {
-    try {
-      if (!isLoggedIn) {
-        navigate("/login");
-        return;
-      }
-      setLoading(true);
-      const { status, data } = await addToCart(encodedToken, product);
-      if (status !== 201) {
-        setLoading(false);
-        return;
-      }
-      setCart(data.cart);
+  const handleAddToCart = async () => {
+    if (!isLoggedIn) {
+      navigate("/login");
+      return;
+    }
+    const {
+      meta: { requestStatus },
+    } = await dispatch(addToCart(product));
+    if (requestStatus === "fulfilled") {
       setIsItemAdded(true);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
     }
   };
 
@@ -72,7 +66,7 @@ export const ProductCard = ({ product }) => {
     isLoggedIn
       ? isItemAdded
         ? navigate("/cart")
-        : addProductToCart()
+        : handleAddToCart()
       : navigate("/login");
 
   const removeProductFromWishlist = async () => {
@@ -117,11 +111,7 @@ export const ProductCard = ({ product }) => {
       />
       <div className="card-bottom">
         {product.inStock ? (
-          <button
-            onClick={handleCartChange}
-            disabled={loading}
-            className="btn btn-primary"
-          >
+          <button onClick={handleCartChange} className="btn btn-primary">
             {isLoggedIn && isItemAdded ? "Go to Cart" : "Add to Cart"}
           </button>
         ) : (

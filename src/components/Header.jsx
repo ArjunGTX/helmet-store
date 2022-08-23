@@ -11,17 +11,18 @@ import { useDebounce } from "../utils/hooks";
 import { useSelector, useDispatch } from "react-redux";
 import { selectAuth } from "../redux/slices/auth";
 import { search } from "../redux/slices/filter";
+import { selectCart } from "../redux/slices/cart";
 
 export const Header = () => {
   const dispatch = useDispatch();
 
   const { isLoggedIn } = useSelector(selectAuth);
+  const cart = useSelector(selectCart);
 
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { toggleSidebar } = useSidebar();
 
-  const { cart } = useCart();
   const { wishlist } = useWishlist();
 
   const [showProfileModal, setShowProfileModal] = useState(false);

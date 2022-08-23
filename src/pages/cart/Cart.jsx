@@ -1,22 +1,27 @@
 import { Link } from "react-router-dom";
-import { useCart } from "../../contexts";
 import "../../styles/pages/cart.css";
-import {
-  getTotalCartPrice,
-  getTotalDeliveryCharge,
-  getTotalDiscount,
-  getTotalQty,
-} from "../../utils/api";
 import { CartCard, Checkout } from "./components";
+import { useSelector } from "react-redux";
+import {
+  selectCart,
+  selectTotalCartPrice,
+  selectTotalCartQty,
+  selectTotalDeliveryCharge,
+  selectTotalDiscount,
+} from "../../redux/slices/cart";
 
 export const Cart = () => {
-  const { cart } = useCart();
+  const cart = useSelector(selectCart);
+  const qty = useSelector(selectTotalCartQty);
+  const price = useSelector(selectTotalCartPrice);
+  const discount = useSelector(selectTotalDiscount);
+  const deliveryCharge = useSelector(selectTotalDeliveryCharge);
 
-  const checkoutDetails = cart && {
-    qty: getTotalQty(cart),
-    price: getTotalCartPrice(cart),
-    discount: getTotalDiscount(cart),
-    deliveryCharge: getTotalDeliveryCharge(cart),
+  const checkoutDetails = {
+    qty,
+    price,
+    discount,
+    deliveryCharge,
   };
 
   return (

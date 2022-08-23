@@ -1,38 +1,30 @@
 import React from "react";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
-import { useCart, useWishlist } from "../../../contexts";
+import { useWishlist } from "../../../contexts";
 import {
   addToWishlist,
-  deleteFromCart,
   deleteFromWishlist,
   getOfferPrice,
-  updateCartCount,
 } from "../../../utils/api";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { selectAuth } from "../../../redux/slices/auth";
+import { removeFromCart, updateCartCount } from "../../../redux/services/cart";
 
 export const CartCard = ({ item }) => {
-  const { setCart } = useCart();
   const { encodedToken } = useSelector(selectAuth);
   const { wishlist, setWishlist } = useWishlist();
+
+  const dispatch = useDispatch();
 
   const isFavourite = wishlist.some((product) => product._id === item._id);
 
   const updateItemCount = async (type) => {
-    try {
-      const action = {
-        type: type,
-      };
-      const { status, data } = await updateCartCount(
-        encodedToken,
-        item._id,
-        action
-      );
-      if (status !== 200) return;
-      setCart(data.cart);
-    } catch (error) {
-      console.log(error);
-    }
+    dispatch(
+      updateCartCount({
+        productId: item._id,
+        type,
+      })
+    );
   };
 
   const addProductToWishlist = async () => {
@@ -56,15 +48,8 @@ export const CartCard = ({ item }) => {
     }
   };
 
-  const removeItemFromCart = async () => {
-    try {
-      const { status, data } = await deleteFromCart(encodedToken, item._id);
-      if (status !== 200) return;
-      setCart(data.cart);
-      return;
-    } catch (error) {
-      console.log(error);
-    }
+  const handleRemoveFromCart = async () => {
+    dispatch(removeFromCart(item._id));
   };
 
   return (
@@ -111,7 +96,7 @@ export const CartCard = ({ item }) => {
           </button>
         </div>
         <div className="card-bottom">
-          <button onClick={removeItemFromCart} className="btn btn-secondary">
+          <button onClick={handleRemoveFromCart} className="btn btn-secondary">
             Remove from Cart
           </button>
         </div>

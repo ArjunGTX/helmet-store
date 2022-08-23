@@ -3,9 +3,9 @@ import * as api from "../../utils/api";
 
 export const getCategories = createAsyncThunk(
   "auth/getCategories",
-  async (credentials) => {
+  async () => {
     try {
-      const { data } = await api.getCategories(credentials);
+      const { data } = await api.getCategories();
       return data.categories;
     } catch (err) {
       console.error(err);
