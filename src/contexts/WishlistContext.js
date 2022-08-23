@@ -1,13 +1,14 @@
 import { createContext, useState, useContext, useEffect } from "react";
 import { getWishlist } from "../utils/api";
-import { useAuth } from "./AuthContext";
+import { useSelector } from "react-redux";
+import { selectAuth } from "../redux/slices/auth";
 
 const WishlistContext = createContext(null);
 
 export const useWishlist = () => useContext(WishlistContext);
 
 export const WishlistProvider = ({ children }) => {
-  const { auth } = useAuth();
+  const auth = useSelector(selectAuth);
 
   const [wishlist, setWishlist] = useState([]);
 

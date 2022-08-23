@@ -1,15 +1,14 @@
 import { createContext, useState, useContext, useEffect } from "react";
 import { getCart } from "../utils/api";
-import { useAuth } from "./AuthContext";
+import { useSelector } from "react-redux";
+import { selectAuth } from "../redux/slices/auth";
 
 const CartContext = createContext(null);
 
 export const useCart = () => useContext(CartContext);
 
 export const CartProvider = ({ children }) => {
-  const {
-    auth
-  } = useAuth();
+  const auth = useSelector(selectAuth);
 
   const [cart, setCart] = useState([]);
 

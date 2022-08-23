@@ -5,24 +5,20 @@ import { BsCart3 } from "react-icons/bs";
 import { CgProfile } from "react-icons/cg";
 import { FiMenu } from "react-icons/fi";
 import "../styles/components/header.css";
-import {
-  useAuth,
-  useCart,
-  useFilters,
-  useSidebar,
-  useWishlist,
-} from "../contexts";
+import { useCart, useFilters, useSidebar, useWishlist } from "../contexts";
 import { ProfileModal } from "./ProfileModal";
 import { useDebounce } from "../utils/hooks";
 import { searchProduct } from "../actions/filter-action";
+import { useSelector } from "react-redux";
+import { selectAuth } from "../redux/slices/auth";
 
 export const Header = () => {
+  const { isLoggedIn } = useSelector(selectAuth);
+
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { toggleSidebar } = useSidebar();
-  const {
-    auth: { isLoggedIn },
-  } = useAuth();
+
   const { cart } = useCart();
   const { wishlist } = useWishlist();
   const { filterDispatch } = useFilters();

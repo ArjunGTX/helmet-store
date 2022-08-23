@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
-import { useAuth, useCart, useWishlist } from "../../../../contexts";
+import { useCart, useWishlist } from "../../../../contexts";
 import {
   addToCart,
   addToWishlist,
@@ -9,10 +9,14 @@ import {
   getOfferPrice,
 } from "../../../../utils/api";
 import { ProductRating } from "./ProductRating";
+import { useSelector } from "react-redux";
+import { selectAuth } from "../../../../redux/slices/auth";
 
 export const ProductCard = ({ product }) => {
+  const { isLoggedIn, encodedToken } = useSelector(selectAuth);
+
   const navigate = useNavigate();
-  const { auth: {isLoggedIn, encodedToken} } = useAuth();
+
   const { cart, setCart } = useCart();
   const { wishlist, setWishlist } = useWishlist();
 

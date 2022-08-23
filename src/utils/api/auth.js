@@ -7,20 +7,12 @@ import {
   PASSWORD_UPPERCASE_REGEX,
 } from "../regexp";
 
-export const login = async (email, password) => {
-  return await axios.post("/api/auth/login", {
-    email,
-    password,
-  });
+export const login = async (credentials) => {
+  return await axios.post("/api/auth/login", credentials);
 };
 
-export const signUp = async (firstName, lastName, email, password) => {
-  return await axios.post("/api/auth/signup", {
-    firstName,
-    lastName,
-    email,
-    password,
-  });
+export const signUp = async (credentials) => {
+  return await axios.post("/api/auth/signup", credentials);
 };
 
 export const validateLoginData = ({ email, password }, initialErrors) => {

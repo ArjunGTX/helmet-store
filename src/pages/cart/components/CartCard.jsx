@@ -1,6 +1,6 @@
 import React from "react";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
-import { useAuth, useCart, useWishlist } from "../../../contexts";
+import { useCart, useWishlist } from "../../../contexts";
 import {
   addToWishlist,
   deleteFromCart,
@@ -8,12 +8,12 @@ import {
   getOfferPrice,
   updateCartCount,
 } from "../../../utils/api";
+import { useSelector } from "react-redux";
+import { selectAuth } from "../../../redux/slices/auth";
 
 export const CartCard = ({ item }) => {
   const { setCart } = useCart();
-  const {
-    auth: { encodedToken },
-  } = useAuth();
+  const { encodedToken } = useSelector(selectAuth);
   const { wishlist, setWishlist } = useWishlist();
 
   const isFavourite = wishlist.some((product) => product._id === item._id);

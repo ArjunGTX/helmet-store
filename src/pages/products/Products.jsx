@@ -46,9 +46,11 @@ export const Products = () => {
         {filters && <Filters filters={filters} />}
       </div>
       <div className="products flex-row flex-center">
-        {filteredProducts.length !== 0 ? filteredProducts.map((product) => (
-          <ProductCard product={product} key={product._id} />
-        )) : (
+        {filteredProducts.length !== 0 ? (
+          filteredProducts.map((product) => (
+            <ProductCard product={product} key={product._id} />
+          ))
+        ) : (
           <h3>No Products matched your search!</h3>
         )}
       </div>

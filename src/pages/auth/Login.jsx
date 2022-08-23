@@ -1,30 +1,30 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../../styles/pages/auth.css";
-import { login, validateLoginData } from "../../utils/api";
+import { validateLoginData } from "../../utils/api";
 import { InputAlert } from "../../components";
-import { useAuth } from "../../contexts";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../../redux/services/auth";
+import { selectAuth } from "../../redux/slices/auth";
 
 export const Login = () => {
+  const dispatch = useDispatch();
+  const { isLoggedIn } = useSelector(selectAuth);
+
   const navigate = useNavigate();
   const location = useLocation();
+
   const from = location.state?.from
     ? location.state.from.pathname === "/sign-up"
       ? "/"
       : location.state.from.pathname
     : -1;
-  const {
-    auth: { isLoggedIn },
-    setAuth,
-  } = useAuth();
 
-  const [loading, setLoading] = useState(false);
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
     remember: false,
   });
-
   const [loginErrors, setLoginErrors] = useState({
     email: "",
     password: "",
@@ -49,37 +49,38 @@ export const Login = () => {
     }
   };
 
-  const loginRequest = async (email, password) => {
-    try {
-      setLoading(true);
-      const { status, data } = await login(email, password);
-      setLoading(false);
-      if (!status === 200) return;
-      setAuth({
-        isLoggedIn: true,
-        encodedToken: data.encodedToken,
-      });
-      navigate(from, {
-        replace: true,
-      });
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-    }
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const { isValid, errors } = validateLoginData(loginData, loginErrors);
     if (!isValid) {
       setLoginErrors(errors);
       return;
     }
-    loginRequest(loginData.email, loginData.password);
+    const {
+      meta: { requestStatus },
+    } = await dispatch(
+      login({
+        email: loginData.email,
+        password: loginData.password,
+      })
+    );
+    if (requestStatus === "fulfilled") {
+      navigate(from);
+    }
   };
 
-  const handleGuestLogin = () => {
-    loginRequest("guestuser@email.com", "GuestUser@123");
+  const handleGuestLogin = async () => {
+    const {
+      meta: { requestStatus },
+    } = await dispatch(
+      login({
+        email: "guestuser@email.com",
+        password: "GuestUser@123",
+      })
+    );
+    if (requestStatus === "fulfilled") {
+      navigate(from);
+    }
   };
 
   return (
