@@ -20,17 +20,15 @@ ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <Provider store={store}>
-        <CategoryProvider>
-          <FilterProvider>
-            <CartProvider>
-              <WishlistProvider>
-                <AppInitializer>
-                  <App />
-                </AppInitializer>
-              </WishlistProvider>
-            </CartProvider>
-          </FilterProvider>
-        </CategoryProvider>
+        <FilterProvider>
+          <CartProvider>
+            <WishlistProvider>
+              <AppInitializer>
+                <App />
+              </AppInitializer>
+            </WishlistProvider>
+          </CartProvider>
+        </FilterProvider>
       </Provider>
     </BrowserRouter>
   </React.StrictMode>,

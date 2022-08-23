@@ -1,10 +1,11 @@
-import { useCategories } from "../../contexts";
 import "../../styles/pages/home.css";
 import { brandList } from "../../utils/constants";
 import { Banner, Brand, Category, Footer } from "./components";
+import { useSelector } from "react-redux";
+import { selectCategories } from "../../redux/slices/category";
 
 export const Home = () => {
-  const { categories } = useCategories();
+  const categories = useSelector(selectCategories);
 
   return (
     <>

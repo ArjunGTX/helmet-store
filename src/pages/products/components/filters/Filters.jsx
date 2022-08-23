@@ -11,7 +11,7 @@ import {
   toggleDelivery,
   toggleStock,
 } from "../../../../actions";
-import { useCategories, useFilters } from "../../../../contexts";
+import { useFilters } from "../../../../contexts";
 import { brandList } from "../../../../utils/constants";
 import { Availability } from "./Availability";
 import { Brand } from "./Brand";
@@ -19,10 +19,13 @@ import { Category } from "./Category";
 import { PriceRange } from "./PriceRange";
 import { Rating } from "./Rating";
 import { SortBy } from "./SortBy";
+import { useSelector } from "react-redux";
+import { selectCategories } from "../../../../redux/slices/category";
 
 export const Filters = ({ filters }) => {
+  const categories = useSelector(selectCategories);
+
   const { filterDispatch } = useFilters();
-  const { categories } = useCategories();
 
   useEffect(() => {
     return () => filterDispatch(clearFilters());
