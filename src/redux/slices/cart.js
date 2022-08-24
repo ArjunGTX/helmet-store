@@ -30,8 +30,6 @@ const cartSlice = createSlice({
   },
 });
 
-export const { logout } = cartSlice.actions;
-
 export const selectCart = (store) => store.cart.list;
 
 export const selectTotalCartPrice = createSelector([selectCart], (cart) =>

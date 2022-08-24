@@ -1,18 +1,16 @@
 import React from "react";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
-import { useWishlist } from "../../../contexts";
+import { getOfferPrice } from "../../../utils/api";
+import { useSelector, useDispatch } from "react-redux";
+import { removeFromCart, updateCartCount } from "../../../redux/services/cart";
+import { selectWishlist } from "../../../redux/slices/wishlist";
 import {
   addToWishlist,
-  deleteFromWishlist,
-  getOfferPrice,
-} from "../../../utils/api";
-import { useSelector, useDispatch } from "react-redux";
-import { selectAuth } from "../../../redux/slices/auth";
-import { removeFromCart, updateCartCount } from "../../../redux/services/cart";
+  removeFromWishlist,
+} from "../../../redux/services/wishlist";
 
 export const CartCard = ({ item }) => {
-  const { encodedToken } = useSelector(selectAuth);
-  const { wishlist, setWishlist } = useWishlist();
+  const wishlist = useSelector(selectWishlist);
 
   const dispatch = useDispatch();
 
@@ -27,25 +25,12 @@ export const CartCard = ({ item }) => {
     );
   };
 
-  const addProductToWishlist = async () => {
-    try {
-      const { status, data } = await addToWishlist(encodedToken, item);
-      if (status !== 201) return;
-      setWishlist(data.wishlist);
-    } catch (error) {
-      console.log(error);
-    }
+  const handleAddToWishlist = async () => {
+    dispatch(addToWishlist(item));
   };
 
-  const removeProductFromWishlist = async () => {
-    try {
-      const { status, data } = await deleteFromWishlist(encodedToken, item._id);
-      if (status !== 200) return;
-      setWishlist(data.wishlist);
-      return;
-    } catch (error) {
-      console.log(error);
-    }
+  const handleRemoveFromWishlist = async () => {
+    dispatch(removeFromWishlist(item._id));
   };
 
   const handleRemoveFromCart = async () => {
@@ -56,7 +41,7 @@ export const CartCard = ({ item }) => {
     <div className="card card-horizontal">
       <button
         onClick={() =>
-          isFavourite ? removeProductFromWishlist() : addProductToWishlist()
+          isFavourite ? handleRemoveFromWishlist() : handleAddToWishlist()
         }
         className="btn btn-icon"
       >

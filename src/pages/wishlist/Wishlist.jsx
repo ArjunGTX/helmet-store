@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
-import { useWishlist } from "../../contexts";
 import "../../styles/pages/products.css";
 import { ProductCard } from "../products/components";
+import { useSelector } from "react-redux";
+import { selectWishlist } from "../../redux/slices/wishlist";
 
 export const Wishlist = () => {
-  const { wishlist } = useWishlist();
+  const wishlist = useSelector(selectWishlist);
 
   return (
     <>

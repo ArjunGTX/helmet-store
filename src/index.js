@@ -2,7 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
-import { CartProvider, WishlistProvider } from "./contexts";
 import { makeServer } from "./server";
 import "./styles/index.css";
 import { Provider } from "react-redux";
@@ -15,11 +14,9 @@ ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <Provider store={store}>
-        <WishlistProvider>
-          <AppInitializer>
-            <App />
-          </AppInitializer>
-        </WishlistProvider>
+        <AppInitializer>
+          <App />
+        </AppInitializer>
       </Provider>
     </BrowserRouter>
   </React.StrictMode>,

@@ -1,27 +1,26 @@
 import React, { useState } from "react";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
-import { useWishlist } from "../../../../contexts";
-import {
-  addToWishlist,
-  deleteFromWishlist,
-  getOfferPrice,
-} from "../../../../utils/api";
+import { getOfferPrice } from "../../../../utils/api";
 import { ProductRating } from "./ProductRating";
 import { useSelector, useDispatch } from "react-redux";
 import { selectAuth } from "../../../../redux/slices/auth";
 import { selectCart } from "../../../../redux/slices/cart";
 import { addToCart } from "../../../../redux/services/cart";
+import { selectWishlist } from "../../../../redux/slices/wishlist";
+import {
+  addToWishlist,
+  removeFromWishlist,
+} from "../../../../redux/services/wishlist";
 
 export const ProductCard = ({ product }) => {
-  const { isLoggedIn, encodedToken } = useSelector(selectAuth);
+  const { isLoggedIn } = useSelector(selectAuth);
   const cart = useSelector(selectCart);
+  const wishlist = useSelector(selectWishlist);
 
   const dispatch = useDispatch();
 
   const navigate = useNavigate();
-
-  const { wishlist, setWishlist } = useWishlist();
 
   const [isItemAdded, setIsItemAdded] = useState(
     cart.some((item) => item._id === product._id)
@@ -41,25 +40,19 @@ export const ProductCard = ({ product }) => {
     }
   };
 
-  const addProductToWishlist = async () => {
-    try {
-      if (!isLoggedIn) {
-        navigate("/login");
-        return;
-      }
-      const { status, data } = await addToWishlist(encodedToken, product);
-      if (status !== 201) return;
-      setWishlist(data.wishlist);
-    } catch (error) {
-      console.log(error);
+  const handleAddToWishlist = async () => {
+    if (!isLoggedIn) {
+      navigate("/login");
+      return;
     }
+    dispatch(addToWishlist(product));
   };
 
   const handleWishlistChange = () =>
     isLoggedIn
       ? isFavourite
-        ? removeProductFromWishlist()
-        : addProductToWishlist()
+        ? handleRemoveFromWishlist()
+        : handleAddToWishlist()
       : navigate("/login");
 
   const handleCartChange = () =>
@@ -69,18 +62,8 @@ export const ProductCard = ({ product }) => {
         : handleAddToCart()
       : navigate("/login");
 
-  const removeProductFromWishlist = async () => {
-    try {
-      const { status, data } = await deleteFromWishlist(
-        encodedToken,
-        product._id
-      );
-      if (status !== 200) return;
-      setWishlist(data.wishlist);
-      return;
-    } catch (error) {
-      console.log(error);
-    }
+  const handleRemoveFromWishlist = async () => {
+    dispatch(removeFromWishlist(product._id));
   };
 
   return (
