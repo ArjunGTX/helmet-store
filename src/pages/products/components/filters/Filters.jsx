@@ -1,17 +1,3 @@
-import { useEffect } from "react";
-import {
-  addBrand,
-  addCategory,
-  clearFilters,
-  filterPrice,
-  filterRating,
-  removeBrand,
-  removeCategory,
-  sortItems,
-  toggleDelivery,
-  toggleStock,
-} from "../../../../actions";
-import { useCategories, useFilters } from "../../../../contexts";
 import { brandList } from "../../../../utils/constants";
 import { Availability } from "./Availability";
 import { Brand } from "./Brand";
@@ -19,45 +5,56 @@ import { Category } from "./Category";
 import { PriceRange } from "./PriceRange";
 import { Rating } from "./Rating";
 import { SortBy } from "./SortBy";
+import { useSelector, useDispatch } from "react-redux";
+import { selectCategories } from "../../../../redux/slices/category";
+import {
+  addBrand,
+  addCategory,
+  clearFilters,
+  removeBrand,
+  removeCategory,
+  setPriceRange,
+  setRating,
+  sort,
+  toggleFastDelivery,
+  toggleStockAvailability,
+} from "../../../../redux/slices/filter";
 
 export const Filters = ({ filters }) => {
-  const { filterDispatch } = useFilters();
-  const { categories } = useCategories();
+  const categories = useSelector(selectCategories);
 
-  useEffect(() => {
-    return () => filterDispatch(clearFilters());
-  }, []);
+  const dispatch = useDispatch();
 
-  const handlePriceChange = (e) => filterDispatch(filterPrice(e.target.value));
+  const handlePriceChange = (e) => dispatch(setPriceRange(e.target.value));
 
   const handleStockChange = (e) =>
-    filterDispatch(toggleStock(e.target.checked));
+    dispatch(toggleStockAvailability(e.target.checked));
 
   const handleDeliveryChange = (e) =>
-    filterDispatch(toggleDelivery(e.target.checked));
+    dispatch(toggleFastDelivery(e.target.checked));
 
   const handleCategoryChange = (e) => {
     if (e.target.checked) {
-      filterDispatch(addCategory(e.target.value));
+      dispatch(addCategory(e.target.value));
     } else {
-      filterDispatch(removeCategory(e.target.value));
+      dispatch(removeCategory(e.target.value));
     }
   };
 
   const handleBrandChange = (e) => {
     if (e.target.checked) {
-      filterDispatch(addBrand(e.target.value));
+      dispatch(addBrand(e.target.value));
     } else {
-      filterDispatch(removeBrand(e.target.value));
+      dispatch(removeBrand(e.target.value));
     }
   };
 
   const handleRatingChange = (e) =>
-    filterDispatch(filterRating(parseInt(e.target.value)));
+    dispatch(setRating(parseInt(e.target.value)));
 
-  const handleSortChange = (e) => filterDispatch(sortItems(e.target.value));
+  const handleSortChange = (e) => dispatch(sort(e.target.value));
 
-  const handleClearAll = () => filterDispatch(clearFilters());
+  const handleClearAll = () => dispatch(clearFilters());
 
   return (
     <>

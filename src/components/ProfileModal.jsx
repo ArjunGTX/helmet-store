@@ -4,23 +4,22 @@ import "../styles/components/profile-modal.css";
 import { useClickOutside } from "../utils/hooks";
 import { MdOutlineContactless } from "react-icons/md";
 import { FiSettings, FiHelpCircle, FiInfo } from "react-icons/fi";
-import { useAuth } from "../contexts";
+import { useDispatch } from "react-redux";
+import { logout } from "../redux/slices/auth";
 
 export const ProfileModal = ({ onClose }) => {
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
-  const { setAuth } = useAuth();
 
   const modalRef = useRef(null);
 
   useClickOutside(modalRef, onClose);
 
   const handleLogout = () => {
-    setAuth({
-      isLoggedIn: false,
-      encodedToken: "",
-    });
+    dispatch(logout());
     onClose();
-    navigate("/");
+    navigate("/login");
   };
 
   return (

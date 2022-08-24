@@ -1,18 +1,19 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { addCategory, removeCategory } from "../../../actions";
-import { useFilters } from "../../../contexts";
+import { useDispatch } from "react-redux";
+import { addCategory, removeCategory } from "../../../redux/slices/filter";
 
 export const Category = ({ categories }) => {
-  const { filterDispatch } = useFilters();
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
 
   const handleCategoryChange = (category) => {
-    filterDispatch(addCategory(category));
+    dispatch(addCategory(category));
     categories.forEach(
       (listCategory) =>
         listCategory.category !== category &&
-        filterDispatch(removeCategory(listCategory.category))
+        dispatch(removeCategory(listCategory.category))
     );
     navigate("/products");
   };

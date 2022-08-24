@@ -1,17 +1,17 @@
 import React from "react";
 import { Header } from "./Header";
 import "../styles/components/page-container.css";
-import { SidebarProvider, useAuth } from "../contexts";
 import { Navigate, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { selectAuth } from "../redux/slices/auth";
 
 export const PageContainer = ({ page, requiresAuth }) => {
+  const { isLoggedIn } = useSelector(selectAuth);
+
   const location = useLocation();
-  const {
-    auth: { isLoggedIn },
-  } = useAuth();
 
   return (
-    <SidebarProvider>
+    <>
       <Header />
       {requiresAuth ? (
         isLoggedIn ? (
@@ -28,6 +28,6 @@ export const PageContainer = ({ page, requiresAuth }) => {
       ) : (
         page
       )}
-    </SidebarProvider>
+    </>
   );
 };

@@ -1,88 +1,69 @@
 import React, { useState } from "react";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
-import { useAuth, useCart, useWishlist } from "../../../../contexts";
-import {
-  addToCart,
-  addToWishlist,
-  deleteFromWishlist,
-  getOfferPrice,
-} from "../../../../utils/api";
+import { getOfferPrice } from "../../../../utils/api";
 import { ProductRating } from "./ProductRating";
+import { useSelector, useDispatch } from "react-redux";
+import { selectAuth } from "../../../../redux/slices/auth";
+import { selectCart } from "../../../../redux/slices/cart";
+import { addToCart } from "../../../../redux/services/cart";
+import { selectWishlist } from "../../../../redux/slices/wishlist";
+import {
+  addToWishlist,
+  removeFromWishlist,
+} from "../../../../redux/services/wishlist";
 
 export const ProductCard = ({ product }) => {
-  const navigate = useNavigate();
-  const { auth: {isLoggedIn, encodedToken} } = useAuth();
-  const { cart, setCart } = useCart();
-  const { wishlist, setWishlist } = useWishlist();
+  const { isLoggedIn } = useSelector(selectAuth);
+  const cart = useSelector(selectCart);
+  const wishlist = useSelector(selectWishlist);
 
-  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
+
   const [isItemAdded, setIsItemAdded] = useState(
     cart.some((item) => item._id === product._id)
   );
   const isFavourite = wishlist.some((item) => item._id === product._id);
 
-  const addProductToCart = async () => {
-    try {
-      if (!isLoggedIn) {
-        navigate("/login");
-        return;
-      }
-      setLoading(true);
-      const { status, data } = await addToCart(encodedToken, product);
-      if (status !== 201) {
-        setLoading(false);
-        return;
-      }
-      setCart(data.cart);
+  const handleAddToCart = async () => {
+    if (!isLoggedIn) {
+      navigate("/login");
+      return;
+    }
+    const {
+      meta: { requestStatus },
+    } = await dispatch(addToCart(product));
+    if (requestStatus === "fulfilled") {
       setIsItemAdded(true);
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
     }
   };
 
-  const addProductToWishlist = async () => {
-    try {
-      if (!isLoggedIn) {
-        navigate("/login");
-        return;
-      }
-      const { status, data } = await addToWishlist(encodedToken, product);
-      if (status !== 201) return;
-      setWishlist(data.wishlist);
-    } catch (error) {
-      console.log(error);
+  const handleAddToWishlist = async () => {
+    if (!isLoggedIn) {
+      navigate("/login");
+      return;
     }
+    dispatch(addToWishlist(product));
   };
 
   const handleWishlistChange = () =>
     isLoggedIn
       ? isFavourite
-        ? removeProductFromWishlist()
-        : addProductToWishlist()
+        ? handleRemoveFromWishlist()
+        : handleAddToWishlist()
       : navigate("/login");
 
   const handleCartChange = () =>
     isLoggedIn
       ? isItemAdded
         ? navigate("/cart")
-        : addProductToCart()
+        : handleAddToCart()
       : navigate("/login");
 
-  const removeProductFromWishlist = async () => {
-    try {
-      const { status, data } = await deleteFromWishlist(
-        encodedToken,
-        product._id
-      );
-      if (status !== 200) return;
-      setWishlist(data.wishlist);
-      return;
-    } catch (error) {
-      console.log(error);
-    }
+  const handleRemoveFromWishlist = async () => {
+    dispatch(removeFromWishlist(product._id));
   };
 
   return (
@@ -113,11 +94,7 @@ export const ProductCard = ({ product }) => {
       />
       <div className="card-bottom">
         {product.inStock ? (
-          <button
-            onClick={handleCartChange}
-            disabled={loading}
-            className="btn btn-primary"
-          >
+          <button onClick={handleCartChange} className="btn btn-primary">
             {isLoggedIn && isItemAdded ? "Go to Cart" : "Add to Cart"}
           </button>
         ) : (

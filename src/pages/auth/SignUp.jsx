@@ -1,18 +1,19 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../../styles/pages/auth.css";
-import { signUp, validateSignUpData } from "../../utils/api";
+import { validateSignUpData } from "../../utils/api";
 import { InputAlert } from "../../components";
-import { useAuth } from "../../contexts";
+import { useDispatch, useSelector } from "react-redux";
+import { signUp } from "../../redux/services/auth";
+import { selectAuth } from "../../redux/slices/auth";
 
 export const SignUp = () => {
+  const dispatch = useDispatch();
+  const { isLoggedIn } = useSelector(selectAuth);
+
   const navigate = useNavigate();
   const location = useLocation();
-  const {
-    auth: { isLoggedIn },
-    setAuth,
-  } = useAuth();
-  const [loading, setLoading] = useState(false);
+
   const [signUpData, setSignUpData] = useState({
     firstName: "",
     lastName: "",
@@ -21,7 +22,6 @@ export const SignUp = () => {
     confirmPassword: "",
     terms: false,
   });
-
   const [signUpErrors, setSignUpErrors] = useState({
     firstName: "",
     lastName: "",
@@ -52,30 +52,24 @@ export const SignUp = () => {
   };
 
   const handleSubmit = async (e) => {
-    try {
-      e.preventDefault();
-      const { isValid, errors } = validateSignUpData(signUpData, signUpErrors);
-      if (!isValid) {
-        setSignUpErrors(errors);
-        return;
-      }
-      setLoading(true);
-      const { status, data } = await signUp(
-        signUpData.firstName,
-        signUpData.lastName,
-        signUpData.email,
-        signUpData.password
-      );
-      setLoading(false);
-      if (status !== 201) return;
-      setAuth({
-        isLoggedIn: true,
-        encodedToken: data.encodedToken,
-      });
+    e.preventDefault();
+    const { isValid, errors } = validateSignUpData(signUpData, signUpErrors);
+    if (!isValid) {
+      setSignUpErrors(errors);
+      return;
+    }
+    const {
+      meta: { requestStatus },
+    } = await dispatch(
+      signUp({
+        firstName: signUpData.firstName,
+        lastName: signUpData.lastName,
+        email: signUpData.email,
+        password: signUpData.password,
+      })
+    );
+    if (requestStatus === "fulfilled") {
       navigate("/");
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
     }
   };
 

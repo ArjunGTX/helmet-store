@@ -1,77 +1,47 @@
 import React from "react";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
-import { useAuth, useCart, useWishlist } from "../../../contexts";
+import { getOfferPrice } from "../../../utils/api";
+import { useSelector, useDispatch } from "react-redux";
+import { removeFromCart, updateCartCount } from "../../../redux/services/cart";
+import { selectWishlist } from "../../../redux/slices/wishlist";
 import {
   addToWishlist,
-  deleteFromCart,
-  deleteFromWishlist,
-  getOfferPrice,
-  updateCartCount,
-} from "../../../utils/api";
+  removeFromWishlist,
+} from "../../../redux/services/wishlist";
 
 export const CartCard = ({ item }) => {
-  const { setCart } = useCart();
-  const {
-    auth: { encodedToken },
-  } = useAuth();
-  const { wishlist, setWishlist } = useWishlist();
+  const wishlist = useSelector(selectWishlist);
+
+  const dispatch = useDispatch();
 
   const isFavourite = wishlist.some((product) => product._id === item._id);
 
   const updateItemCount = async (type) => {
-    try {
-      const action = {
-        type: type,
-      };
-      const { status, data } = await updateCartCount(
-        encodedToken,
-        item._id,
-        action
-      );
-      if (status !== 200) return;
-      setCart(data.cart);
-    } catch (error) {
-      console.log(error);
-    }
+    dispatch(
+      updateCartCount({
+        productId: item._id,
+        type,
+      })
+    );
   };
 
-  const addProductToWishlist = async () => {
-    try {
-      const { status, data } = await addToWishlist(encodedToken, item);
-      if (status !== 201) return;
-      setWishlist(data.wishlist);
-    } catch (error) {
-      console.log(error);
-    }
+  const handleAddToWishlist = async () => {
+    dispatch(addToWishlist(item));
   };
 
-  const removeProductFromWishlist = async () => {
-    try {
-      const { status, data } = await deleteFromWishlist(encodedToken, item._id);
-      if (status !== 200) return;
-      setWishlist(data.wishlist);
-      return;
-    } catch (error) {
-      console.log(error);
-    }
+  const handleRemoveFromWishlist = async () => {
+    dispatch(removeFromWishlist(item._id));
   };
 
-  const removeItemFromCart = async () => {
-    try {
-      const { status, data } = await deleteFromCart(encodedToken, item._id);
-      if (status !== 200) return;
-      setCart(data.cart);
-      return;
-    } catch (error) {
-      console.log(error);
-    }
+  const handleRemoveFromCart = async () => {
+    dispatch(removeFromCart(item._id));
   };
 
   return (
     <div className="card card-horizontal">
       <button
         onClick={() =>
-          isFavourite ? removeProductFromWishlist() : addProductToWishlist()
+          isFavourite ? handleRemoveFromWishlist() : handleAddToWishlist()
         }
         className="btn btn-icon"
       >
@@ -111,7 +81,7 @@ export const CartCard = ({ item }) => {
           </button>
         </div>
         <div className="card-bottom">
-          <button onClick={removeItemFromCart} className="btn btn-secondary">
+          <button onClick={handleRemoveFromCart} className="btn btn-secondary">
             Remove from Cart
           </button>
         </div>
