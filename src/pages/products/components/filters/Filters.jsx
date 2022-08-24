@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { brandList } from "../../../../utils/constants";
 import { Availability } from "./Availability";
 import { Brand } from "./Brand";
@@ -25,10 +24,6 @@ export const Filters = ({ filters }) => {
   const categories = useSelector(selectCategories);
 
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    return () => dispatch(clearFilters());
-  }, []);
 
   const handlePriceChange = (e) => dispatch(setPriceRange(e.target.value));
 

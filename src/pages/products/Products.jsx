@@ -1,41 +1,22 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef } from "react";
 import "../../styles/pages/products.css";
 import { Filters, ProductCard } from "./components";
 import { GrClose } from "react-icons/gr";
 import { useClickOutside } from "../../utils/hooks";
-import { getFilteredProducts, getProducts } from "../../utils/api";
 import { useSelector, useDispatch } from "react-redux";
 import { selectFilters } from "../../redux/slices/filter";
 import { close, selectIsSidebarOpen } from "../../redux/slices/sidebar";
+import { selectFilteredProducts } from "../../redux/slices/products";
 
 export const Products = () => {
   const filters = useSelector(selectFilters);
   const isSidebarOpen = useSelector(selectIsSidebarOpen);
+  const filteredProducts = useSelector(selectFilteredProducts);
 
   const dispatch = useDispatch();
 
   const sidebarRef = useRef(null);
   useClickOutside(sidebarRef, () => dispatch(close()));
-
-  const [loading, setLoading] = useState(false);
-  const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    (async () => {
-      try {
-        setLoading(true);
-        const response = await getProducts();
-        setLoading(false);
-        setProducts(response.data.products);
-      } catch (error) {
-        //will be replaced by alert messages
-        console.log(error);
-        setLoading(false);
-      }
-    })();
-  }, []);
-
-  const filteredProducts = getFilteredProducts(products, filters);
 
   return (
     <div className="products-container">
