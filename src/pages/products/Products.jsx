@@ -2,19 +2,20 @@ import React, { useRef, useState, useEffect } from "react";
 import "../../styles/pages/products.css";
 import { Filters, ProductCard } from "./components";
 import { GrClose } from "react-icons/gr";
-import { useSidebar } from "../../contexts";
 import { useClickOutside } from "../../utils/hooks";
 import { getFilteredProducts, getProducts } from "../../utils/api";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { selectFilters } from "../../redux/slices/filter";
+import { close, selectIsSidebarOpen } from "../../redux/slices/sidebar";
 
 export const Products = () => {
-  const { isSidebarActive, toggleSidebar } = useSidebar();
-  const sidebarRef = useRef(null);
-  const closeSidebar = () => toggleSidebar(false);
-  useClickOutside(sidebarRef, closeSidebar);
-
   const filters = useSelector(selectFilters);
+  const isSidebarOpen = useSelector(selectIsSidebarOpen);
+
+  const dispatch = useDispatch();
+
+  const sidebarRef = useRef(null);
+  useClickOutside(sidebarRef, () => dispatch(close()));
 
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState([]);
@@ -40,9 +41,12 @@ export const Products = () => {
     <div className="products-container">
       <div
         ref={sidebarRef}
-        className={`sidebar  ${isSidebarActive ? "show-sidebar" : ""}`}
+        className={`sidebar  ${isSidebarOpen ? "show-sidebar" : ""}`}
       >
-        <button onClick={closeSidebar} className="btn btn-icon close-icon">
+        <button
+          onClick={() => dispatch(close())}
+          className="btn btn-icon close-icon"
+        >
           <GrClose />
         </button>
         {filters && <Filters filters={filters} />}

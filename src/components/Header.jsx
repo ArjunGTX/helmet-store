@@ -5,7 +5,6 @@ import { BsCart3 } from "react-icons/bs";
 import { CgProfile } from "react-icons/cg";
 import { FiMenu } from "react-icons/fi";
 import "../styles/components/header.css";
-import { useSidebar } from "../contexts";
 import { ProfileModal } from "./ProfileModal";
 import { useDebounce } from "../utils/hooks";
 import { useSelector, useDispatch } from "react-redux";
@@ -13,6 +12,7 @@ import { selectAuth } from "../redux/slices/auth";
 import { search } from "../redux/slices/filter";
 import { selectCart } from "../redux/slices/cart";
 import { selectWishlist } from "../redux/slices/wishlist";
+import { open } from "../redux/slices/sidebar";
 
 export const Header = () => {
   const dispatch = useDispatch();
@@ -23,7 +23,6 @@ export const Header = () => {
 
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const { toggleSidebar } = useSidebar();
 
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -58,7 +57,7 @@ export const Header = () => {
       <div className="flex-row flex-center">
         {/* only show hamburger menu on products page */}
         {pathname === "/products" && (
-          <button onClick={() => toggleSidebar(true)} className="btn btn-icon">
+          <button onClick={() => dispatch(open())} className="btn btn-icon">
             <FiMenu className="nav-icon" />
           </button>
         )}

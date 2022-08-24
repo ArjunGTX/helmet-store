@@ -3,6 +3,7 @@ import { authReducer } from "../slices/auth";
 import { cartReducer } from "../slices/cart";
 import { categoryReducer } from "../slices/category";
 import { filterReducer } from "../slices/filter";
+import { sidebarReducer } from "../slices/sidebar";
 import { wishlistReducer } from "../slices/wishlist";
 
 export const store = configureStore({
@@ -12,6 +13,7 @@ export const store = configureStore({
     filter: filterReducer,
     cart: cartReducer,
     wishlist: wishlistReducer,
+    sidebar: sidebarReducer,
   },
 });
 
